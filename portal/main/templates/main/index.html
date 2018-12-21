@@ -1,0 +1,259 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block body %}
+<body>
+    <div class="page-container">
+        <nav>
+            <div class="nav-wrapper">
+                <span class="brand-logo center">Bengalathon</span>
+                <ul id="nav-mobile" class="right">
+                    <li><a class="dropdown-trigger" href="#" data-target="user-dropdown"><i class="material-icons">
+                                account_circle </i></a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <ul id="user-dropdown" class="dropdown-content">
+            <li><a href="{% url 'index' %}" class="active">Home</a></li>
+            <li><a href="{% url 'company_logout' %}">Logout</a></li>
+        </ul>
+
+        <div id="particles-js"></div>
+
+        <div>
+            <ul class="row">
+                <div class="col s4">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title">
+                                <a href="#" id="view-customer">View</a>
+                            </span>
+                            <p>View details of all customers</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s4">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title">
+                                <a href="#" id="add-customer">Add</a>
+                            </span>
+                            <p>Add customer details and calculate risk</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s4">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title">
+                                <a href="#" id="edit-customer">Edit</a>
+                            </span>
+                            <p>Edit existing customer details</p>
+                        </div>
+                    </div>
+                </div>
+            </ul>
+        </div>
+
+        <div class="row container hide editForm">
+            <form class="col s12" method="GET" action="{% url 'edit_customer_get' %}">
+                <h5>Edit customer details</h5>
+                <div class="row">
+                    <div class="input-field col s12 l6">
+                        <input type="number" name="customer_id">
+                        <label for="customer_id">Enter id</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 l6">
+                        <center><button class="btn waves-effect waves-light" type="submit" name="action">Edit
+                                <i class="material-icons right">send</i>
+                            </button></center>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="row container formA hide">
+            <form class="col s12" method="POST" action="{% url 'add_customer' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <h5>Form-A</h5>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 l6">
+                        <input type="text" name="name" class="validate">
+                        <label for="name">Name</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 l6">
+                        <span>Birthdate</span>
+                        <input type="date" name="dob">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 l6">
+                        <input type="number" name="age" min="1" max="100">
+                        <label for="age">Age</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 l6">
+                        <input type="number" name="no_children" min="0" max="10">
+                        <label for="no_children">Number of kids</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 l6">
+                        <input type="number" name="no_children_drive" min="0" max="10">
+                        <label for="no_children_drive">How many of your kids drive</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 l6">
+                        <input type="number" name="income">
+                        <label for="income">Income(in INR)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <span> Are parents alive?</span>
+                    <p><label> <input type="radio" name="parents_alive" value="True"/> <span>Yes</span> </label></p>
+                    <p><label> <input type="radio" name="parents_alive" value="False"/> <span>No</span> </label></p>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 l6">
+                        <input type="number" name="home_estimate">
+                        <label for="home_estimate">Value of home(in INR)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <span> Marital Status</span>
+                    <p><label> <input type="radio" name="marriage_status" value="Married"/> <span>Married</span> </label></p>
+                    <p><label> <input type="radio" name="marriage_status" value="Unmarried"/> <span>Unmarried</span> </label></p>
+                </div>
+                <div class="row">
+                    <span>Gender</span>
+                    <p><label> <input type="radio" name="gender" value="Male"/> <span>Male</span> </label></p>
+                    <p><label> <input type="radio" name="gender" value="Female"/> <span>Female</span> </label></p>
+                    <p><label><input type="radio" name="gender" value="Other"><span>Other</span></label></p>
+                </div>
+                <div class="row">
+                    <span>Education</span>
+                    <p><label> <input type="radio" name="education" value="Less than High School"/> <span>Less than High School</span> </label></p>
+                    <p><label> <input type="radio" name="education" value="High School"/> <span>High School</span> </label></p>
+                    <p><label> <input type="radio" name="education" value="Bachelors"/> <span>Bachelors</span> </label></p>
+                    <p><label> <input type="radio" name="education" value="Masters"/> <span>Masters</span> </label></p>
+                    <p><label> <input type="radio" name="education" value="PhD"/> <span>PhD</span> </label></p>
+                </div>
+                <div class="row">
+                    <span>Occupation</span>
+                    <p><label> <input type="radio" name="occupation" value="Manager"/> <span>Manager</span> </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Doctor"/> <span>Doctor</span> </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Student"/> <span>Student</span> </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Blue Collar"/> <span>Blue Collar</span> </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Lawyer"/> <span>Lawyer</span> </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Clerical"/> <span>Clerical</span> </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Professional"/> <span>Professional</span> </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Home"/> <span>Home</span> </label></p>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 l6">
+                        <input type="number" name="avg_travel_time">
+                        <label for="avg_travel_time">Average Travel Time (in min)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <span> Use of Car</span>
+                    <p><label> <input type="radio" name="car_use" value="Commercial"/> <span>Commercial</span> </label></p>
+                    <p><label> <input type="radio" name="car_use" value="Private"/> <span>Private</span> </label></p>
+                </div>
+                <div class="row">
+                    <span>Type of car</span>
+                    <p><label> <input type="radio" name="car_type" value="Van"/> <span>Van</span> </label></p>
+                    <p><label> <input type="radio" name="car_type" value="Panel Truck"/> <span>Panel Truck</span> </label></p>
+                    <p><label> <input type="radio" name="car_type" value="Minivan"/> <span>Minivan</span> </label></p>
+                    <p><label> <input type="radio" name="car_type" value="Sports"/> <span>Sports</span> </label></p>
+                    <p><label> <input type="radio" name="car_type" value="SUV"/> <span>SUV</span> </label></p>
+                    <p><label> <input type="radio" name="car_type" value="Pickup"/> <span>Pickup</span> </label></p>
+                </div>
+                <div class="row">
+                    <span>Is your car red in color</span>
+                    <p><label> <input type="radio" name="car_color_red" value="Yes"/> <span>Yes</span> </label></p>
+                    <p><label> <input type="radio" name="car_color_red" value="No"/> <span>No</span> </label></p>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 l6">
+                        <input type="number" name="car_age">
+                        <label for="car_age">What is the age of car(in years)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <span>Urbanicity</span>
+                    <p><label> <input type="radio" name="urbanicity" value="Rural"/> <span>Rural</span> </label></p>
+                    <p><label> <input type="radio" name="urbanicity" value="Urban"/> <span>Urban</span> </label></p>
+                </div>
+                <div class="row">
+                    <div class="col s12 l6">
+                        <center><button class="btn waves-effect waves-light" type="submit" name="calculate">Calculate Risk
+                                <i class="material-icons right">send</i>
+                            </button></center>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 l6">
+                        <center><button class="btn waves-effect waves-light" type="submit" name="add">Add customer
+                                <i class="material-icons right">send</i>
+                            </button></center>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="container row cust-details">    
+            <table id="cust-view">
+                <span class="table-title center">
+                    <h5>Customer details</h5>
+                </span>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Credibility</th>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+    <script src="{% static 'main/js/particles.js' %}"></script>
+    <script src="{% static 'main/js/app.js' %}"></script>
+    <script src="{% static 'main/js/main.js' %}"></script>
+</body>
+
+<script>
+    $(document).ready(() => {
+        $('.dropdown-trigger').dropdown();
+        $('#add-customer').click(() => {
+            $(".formA").toggleClass('hide');
+        });
+        $('#view-customer').click(() => {
+            if({{customers|safe}}.length == 0) {
+                alert('No customer added');
+            }
+            $(".cust-details").toggleClass('hide');
+        });
+        $('#edit-customer').click(() => {
+            $(".editForm").toggleClass('hide');
+        });
+    });
+
+    let customer_data = {{customers|safe}};
+    customer_data.forEach(customer => {
+        customer_fields = customer['fields'];
+        view_table = document.getElementById('cust-view');
+        view_table.innerHTML += '<tr><td><a href="#">' + customer_fields['name'] + '</a></td><td>' + customer_fields['age'] + '</td><td>' + customer_fields['risk']*100 + '%</td></tr>';
+    });
+</script>
+
+{% endblock %}
+    

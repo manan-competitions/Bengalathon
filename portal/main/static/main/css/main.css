@@ -1,0 +1,69 @@
+.nav-wrapper #nav-mobile li {
+    padding-right: 15px;
+    cursor: pointer;
+}
+
+.nav-wrapper {
+    /* background: #D38312; */
+    /* fallback for old browsers */
+    /* background: -webkit-linear-gradient(to right, #A83279, #D38312); */
+    /* Chrome 10-25, Safari 5.1-6 */
+    /* background: linear-gradient(to right, #A83279, #D38312); */
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+    background: #33768b;
+}
+
+body {
+    background: #47c4ed;
+}
+
+#particles-js {
+    height: 100%;
+    background: #fff;
+}
+
+canvas {
+    display: block;
+    /* background: rgb(33,36,50); */
+    position: fixed;
+    z-index: -1;
+}
+
+.card {
+    background: #f5f2ed;
+}
+
+.editForm {
+    padding-left: 10px;
+    background: #f5f2ed;
+}
+
+.formA {
+    background: #f5f2ed;
+    padding-left: 10px;
+}
+
+.hide {
+    display: none;
+}
+
+.cust-details {
+    background: #f5f2ed;
+    padding: 3px 5px;
+}
+
+.cust-details tr a:hover {
+    color: darkcyan;
+}
+
+@media all and (max-width: 1000px) {
+    .card p {
+        display: none;
+    }
+
+    .card span a {
+        font-size: 20px;
+    }
+}

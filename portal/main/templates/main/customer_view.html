@@ -1,0 +1,36 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+    <ul id="user-dropdown" class="dropdown-content">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#!">Logout</a></li>
+    </ul>
+    {{ customer }}
+    <div class="container row details">
+        <div class="col s12"><span>Name</span></div>
+        <div class="col s6"><span>Birthdate</span></div>
+        <div class="col s6"><span>Age</span></div>
+        <div class="col s12 l6"><span>Number of children</span></div>
+        <div class="col s12 l6"><span>Children that drive</span></div>
+        <div class="col s6 l4"><span>Income</span></div>
+        <div class="col s6 l4"><span>Are parents alive?</span></div>
+        <div class="col s6 l4"><span>House value</span></div>
+        <div class="col s6 l4"><span>Marital Status</span></div>
+        <div class="col s6 l4"><span>Gender</span></div>
+        <div class="col s6 l4"><span>Education</span></div>
+        <div class="col s6 l4"><span>Occupation</span></div>
+        <div class="col s6 l4"><span>Travel time</span></div>
+        <div class="col s6 l4"><span>Use of car</span></div>
+        <div class="col s6 l4"><span>Car type</span></div>
+        <div class="col s6 l4"><span>Is car red</span></div>
+        <div class="col s6 l4"><span>Age of car</span></div>
+        <div class="col s6 l4"><span>Urbanicity</span></div>
+    </div>
+</body>
+<script>
+    $(document).ready(() => {
+        $('.dropdown-trigger').dropdown();
+    });
+</script>
+
+</html>
