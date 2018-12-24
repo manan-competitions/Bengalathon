@@ -9,6 +9,7 @@ import sklearn
 from sklearn.neural_network import MLPClassifier
 import pickle
 import csv
+import os
 
 class ml_model(object):
     """
@@ -99,7 +100,8 @@ class ml_model(object):
         Returns:
             None
         """
-        pickle.dump(self.nn, open(filename, 'wb'))
+        file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), filename)
+        pickle.dump(self.nn, open(file_path, 'wb'))
 
     def load(self, filename='model.pkl'):
         """
@@ -111,16 +113,18 @@ class ml_model(object):
         Returns:
             None
         """
-        self.nn = pickle.load(open(filename, 'rb'))
+        file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), filename)
+        self.nn = pickle.load(open(file_path, 'rb'))
 
-
-valid_X = pd.read_csv('valid.csv', index_col='ID')
+valid_csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'valid.csv')
+valid_X = pd.read_csv(valid_csv_path, index_col='ID')
 valid_Y = valid_X['CLAIM_FLAG']
 valid_X = valid_X.drop(['CLAIM_FLAG'], axis=1)
 
 model = ml_model()
 
-model.load()
+#model.load()
+model.save()
 
 print(model.eval(valid_X,valid_Y))
 
