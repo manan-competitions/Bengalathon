@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.core import serializers
 import json
 from main.forms import CustomerForm, CompanyProfileForm, UserForm
-from main.mlmodel.model import ml_model
+#from main.mlmodel.model import ml_model
 
 @login_required
 def index(request):
@@ -97,9 +97,9 @@ def add_customer(request):
             customer.car_color_red = customer_form_data['car_color_red']
             customer.car_age = customer_form_data['car_age']
             customer.urbanicity = customer_form_data['urbanicity']
-            model = ml_model()
-            risk = model.predict(X)
-            customer.risk = risk
+            #model = ml_model()
+            #risk = model.predict(X)
+            customer.risk = 0
             customer.save()
             return HttpResponseRedirect(reverse('index'))
         else:
