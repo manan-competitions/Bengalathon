@@ -66,7 +66,7 @@ def company_logout(request):
 def get_serialized_customer(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     serialized_customer = serializers.serialize('json', [customer, ])
-    return JsonResponse({'customer': serialized_customer})
+    return render(request, 'main/customer_view.html', {'customer': serialized_customer})
 
 
 @login_required
@@ -126,3 +126,4 @@ def edit_customer(request, pk=None):
                 'json', [customer_edit_form.errors])
             return JsonResponse({'form_errors': serialized_errors})
     return render(request, 'main/customer_edit.html', {'customer': serialized_customer})
+

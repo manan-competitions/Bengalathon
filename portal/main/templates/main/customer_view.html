@@ -1,36 +1,101 @@
 {% extends "main/base.html" %}
 {% load static %}
+{% block body %}
+
+<style>
+    #details {
+        margin-top: 20px;
+        background: #f3f3f3;
+    }
+    #details div {
+        border: 0.5px solid black;
+    }
+    #details div span:nth-child(1) {
+        font-size: 18px;
+    }
+    #details div span:nth-child(2) {
+        font-size: 22px;
+        color: red;
+    }
+</style>
+
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <span class="brand-logo center">Bengalathon</span>
+            <ul id="nav-mobile" class="right">
+                <li><a class="dropdown-trigger" href="#" data-target="user-dropdown"><i class="material-icons">
+                            account_circle </i></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="particles-js"></div>
 
     <ul id="user-dropdown" class="dropdown-content">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="#!">Logout</a></li>
+        <li><a href="{% url 'index' %}" class="active">Home</a></li>
+        <li><a href="{% url 'company_logout' %}">Logout</a></li>
     </ul>
-    {{ customer }}
-    <div class="container row details">
-        <div class="col s12"><span>Name</span></div>
-        <div class="col s6"><span>Birthdate</span></div>
-        <div class="col s6"><span>Age</span></div>
-        <div class="col s12 l6"><span>Number of children</span></div>
-        <div class="col s12 l6"><span>Children that drive</span></div>
-        <div class="col s6 l4"><span>Income</span></div>
-        <div class="col s6 l4"><span>Are parents alive?</span></div>
-        <div class="col s6 l4"><span>House value</span></div>
-        <div class="col s6 l4"><span>Marital Status</span></div>
-        <div class="col s6 l4"><span>Gender</span></div>
-        <div class="col s6 l4"><span>Education</span></div>
-        <div class="col s6 l4"><span>Occupation</span></div>
-        <div class="col s6 l4"><span>Travel time</span></div>
-        <div class="col s6 l4"><span>Use of car</span></div>
-        <div class="col s6 l4"><span>Car type</span></div>
-        <div class="col s6 l4"><span>Is car red</span></div>
-        <div class="col s6 l4"><span>Age of car</span></div>
-        <div class="col s6 l4"><span>Urbanicity</span></div>
+    <div class="container row" id="details">
+        <div class="col s12"><span>Name:</span> <span id="name"></span></div>
+        <div class="col s12 l6"><span>Birthdate:</span> <span id="dob"></span></div>
+        <div class="col s12 l6"><span>Age:</span> <span id="age"></span></div>
+        <div class="col s12 l6"><span>Number of children:</span> <span id="no_children"></span></div>
+        <div class="col s12 l6"><span>Children that drive:</span> <span id="no_children_drive"></span></div>
+        <div class="col s12 l4"><span>Income:</span> <span id="income"></span></div>
+        <div class="col s12 l4"><span>Are parents alive?:</span> <span id="parents_alive"></span></div>
+        <div class="col s12 l4"><span>House value:</span> <span id="house_value"></span></div>
+        <div class="col s12 l4"><span>Marital Status:</span> <span id="marital_status"></span></div>
+        <div class="col s12 l4"><span>Gender:</span> <span id="gender"></span></div>
+        <div class="col s12 l4"><span>Education:</span> <span id="education"></span></div>
+        <div class="col s12 l4"><span>Occupation:</span> <span id="occupation"></span></div>
+        <div class="col s12 l4"><span>Travel time:</span> <span id="travel_time"></span></div>
+        <div class="col s12 l4"><span>Use of car:</span> <span id="use_of_car"></span></div>
+        <div class="col s12 l4"><span>Car type:</span> <span id="car_type"></span></div>
+        <div class="col s12 l4"><span>Is car red:</span> <span id="car_color"></span></div>
+        <div class="col s12 l4"><span>Age of car:</span> <span id="car_age"></span></div>
+        <div class="col s12 l4"><span>Urbanicity:</span> <span id="urbanicity"></span></div>
     </div>
+    <script src="{% static 'main/js/particles.js' %}"></script>
+    <script src="{% static 'main/js/app.js' %}"></script>
 </body>
+
 <script>
     $(document).ready(() => {
         $('.dropdown-trigger').dropdown();
+        let customer = {{customer|safe}}[0];
+        // console.log(customer);
+        customer_data = customer['fields'];
+        console.log(customer_data);
+        $('#name')[0].innerHTML = customer_data['name'];
+        $('#age')[0].innerHTML = customer_data['age'] + " yrs";
+        $('#dob')[0].innerHTML = customer_data['dob'];
+        $('#no_children')[0].innerHTML = customer_data['no_children'];
+        $('#no_children_drive')[0].innerHTML = customer_data['no_children_drive'];
+        $('#income')[0].innerHTML = "&#8377;" + customer_data['income'];
+        $('#house_value')[0].innerHTML = "&#8377;" + customer_data['home_estimate'];
+        $('#marital_status')[0].innerHTML = customer_data['marriage_status'];
+        $('#education')[0].innerHTML = customer_data['education'];
+        $('#occupation')[0].innerHTML = customer_data['occupation'];
+        $('#travel_time')[0].innerHTML = customer_data['avg_travel_time'] + " mins";
+        $('#urbanicity')[0].innerHTML = customer_data['urbanicity'];
+        $('#gender')[0].innerHTML = customer_data['gender'];
+        $('#use_of_car')[0].innerHTML = customer_data['car_use'];
+        $('#car_type')[0].innerHTML = customer_data['car_type'];
+        $('#car_age')[0].innerHTML = customer_data['car_age'] + " yrs";
+        if(customer_data['parents_alive']) {
+            $('#parents_alive')[0].innerHTML = "Yes";
+        }
+        else if(!customer_data['parents_alive']) {
+            $('#parents_alive')[0].innerHTML = "No";
+        }
+        if(customer_data['car_color_red']) {
+            $('#car_color')[0].innerHTML = "Yes";
+        }
+        else if(!customer_data['car_color_red']) {
+            $('#car_color')[0].innerHTML = "No";
+        }
     });
 </script>
 
-</html>
+{% endblock %}
