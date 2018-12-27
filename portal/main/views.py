@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.core import serializers
 import json
 from main.forms import CustomerForm, CompanyProfileForm, UserForm
-#from main.mlmodel.model import ml_model
+from main.mlmodel.model import ml_model
 
 
 @login_required
@@ -78,8 +78,9 @@ def add_customer(request):
         if customer_form.is_valid():
             print(customer_form)
             customer = customer_form.save(commit=False)
-            #model = ml_model()
-            #risk = model.predict(X)
+            model = ml_model()
+            X = [customer.no_children_drive, customer.age, customer.no_kids, customer.income, customer.parents_alive, customer.home_estimate, customer.marriage_status, customer.gender, customer.avg_travel_time, customer.occupation, customer.car_use, customer.car_color_red, customer.prev_insurance_amt, customer.prev_insurance_no, customer.prev_claim_revoked, customer.insured_value, customer.car_age, customer.urbanicity, ]
+            risk = model.predict(X)
             customer.company = company_profile
             customer.risk = 0
             customer.save()

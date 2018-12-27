@@ -48,7 +48,7 @@ class Customer(models.Model):
     no_children_drive = models.IntegerField(choices=NO_CHILDREN_CHOICE)
     income = models.IntegerField(default=0)
     parents_alive = models.BooleanField(default=False)
-    home_estimate = models.IntegerField(default=0)
+    home_estimate = models.FloatField(default=0.0)
     marriage_status = models.CharField(
         'Marriage Status', choices=MARRIAGE_CHOICE, max_length=100)
     gender = models.CharField(choices=GENDER_CHOICE, max_length=100)
