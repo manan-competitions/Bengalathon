@@ -9,6 +9,7 @@ import json
 from main.forms import CustomerForm, CompanyProfileForm, UserForm
 #from main.mlmodel.model import ml_model
 
+
 @login_required
 def index(request):
     serialized_customers = serializers.serialize(
@@ -37,7 +38,7 @@ def company_register(request):
                                                                    'company_profile_form_errors': company_profile_form.errors})
         else:
             return render(request, 'main/company_login.html', {'user_form_errors': user_form.errors,
-                                                                'company_profile_form_errors': company_profile_form.errors})
+                                                               'company_profile_form_errors': company_profile_form.errors})
     return render(request, 'main/company_login.html', {})
 
 
@@ -76,29 +77,10 @@ def add_customer(request):
         company_profile = CompanyProfile.objects.get(user=request.user)
         if customer_form.is_valid():
             print(customer_form)
-            customer_form_data = customer_form.cleaned_data
-            customer = Customer()
-            customer.company = company_profile
-            customer.name = customer_form_data['name']
-            customer.dob = customer_form_data['dob']
-            customer.age = customer_form_data['age']
-            customer.no_children = customer_form_data['no_children']
-            customer.no_children_drive = customer_form_data['no_children_drive']
-            customer.income = customer_form_data['income']
-            customer.parents_alive = customer_form_data['parents_alive']
-            customer.home_estimate = customer_form_data['home_estimate']
-            customer.marriage_status = customer_form_data['marriage_status']
-            customer.gender = customer_form_data['gender']
-            customer.education = customer_form_data['education']
-            customer.occupation = customer_form_data['occupation']
-            customer.avg_travel_time = customer_form_data['avg_travel_time']
-            customer.car_use = customer_form_data['car_use']
-            customer.car_type = customer_form_data['car_type']
-            customer.car_color_red = customer_form_data['car_color_red']
-            customer.car_age = customer_form_data['car_age']
-            customer.urbanicity = customer_form_data['urbanicity']
+            customer = customer_form.save(commit=False)
             #model = ml_model()
             #risk = model.predict(X)
+            customer.company = company_profile
             customer.risk = 0
             customer.save()
             return HttpResponseRedirect(reverse('index'))
@@ -113,10 +95,14 @@ def add_customer(request):
 def edit_customer(request, pk=None):
     if request.method == 'GET':
         pk = request.GET['customer_id']
-        customer = get_object_or_404(Customer, pk=pk)
-        serialized_customer = serializers.serialize('json', [customer, ])
+        try:
+            customer = Customer.objects.get(pk=pk)
+            serialized_customer = serializers.serialize('json', [customer, ])
+            status = '200'
+        except:
+            status = '404'
     else:
-        customer = get_object_or_404(Customer, id=pk)
+        customer = Customer.objects.get(pk=pk)
         customer_edit_form = CustomerForm(request.POST, instance=customer)
         if customer_edit_form.is_valid():
             customer_edit_form.save()
@@ -125,5 +111,5 @@ def edit_customer(request, pk=None):
             serialized_errors = serializers.serialize(
                 'json', [customer_edit_form.errors])
             return JsonResponse({'form_errors': serialized_errors})
-    return render(request, 'main/customer_edit.html', {'customer': serialized_customer})
-
+    return render(request, 'main/customer_edit.html', {'status': status,
+                                                       'customer': serialized_customer})

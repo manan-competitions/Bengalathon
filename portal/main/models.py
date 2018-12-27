@@ -62,6 +62,10 @@ class Customer(models.Model):
     car_age = models.IntegerField(default=0)
     urbanicity = models.CharField(
         choices=(('Rural', 'Rural'), ('Urban', 'Urban')), max_length=100)
+    insured_value = models.FloatField(default=0.0)
+    prev_insurance_amt = models.FloatField(default=0.0)
+    prev_insurance_no = models.IntegerField(default=0)
+    prev_claim_revoked = models.BooleanField(default=False)
     risk = models.FloatField(default=0.0, validators=[MaxValueValidator(1.0)])
 
     def __str__(self):
