@@ -123,10 +123,10 @@ valid_X = valid_X.drop(['CLAIM_FLAG'], axis=1)
 
 model = ml_model()
 
-#model.load()
-model.save()
+model.load()
 
-print(model.eval(valid_X,valid_Y))
 
-X = valid_X.sample(n=5)
-print(model.predict(X,save=True))
+#print(model.eval(valid_X,valid_Y))
+
+#X = valid_X.sample(n=5)
+#print(model.predict(X,save=True))

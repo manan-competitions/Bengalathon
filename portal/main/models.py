@@ -4,11 +4,6 @@ from django.contrib.auth.models import User
 
 
 NO_CHILDREN_CHOICE = [(i, i) for i in range(11)]
-MARRIAGE_CHOICE = (('Unmarried', 'Unmarried'),
-                   ('Married', 'Married'))
-GENDER_CHOICE = (('Female', 'Female'),
-                 ('Male', 'Male'),
-                 ('Other', 'Other'))
 EDUCATION_CHOICE = (('Less than High School', 'Less than High School'),
                     ('High School', 'High School'),
                     ('Bachelors', 'Bachelors'),
@@ -46,24 +41,21 @@ class Customer(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(100)], default=1)
     no_children = models.IntegerField(choices=NO_CHILDREN_CHOICE)
     no_children_drive = models.IntegerField(choices=NO_CHILDREN_CHOICE)
-    income = models.IntegerField(default=0)
+    income = models.BigIntegerField(default=0)
     parents_alive = models.BooleanField(default=False)
-    home_estimate = models.IntegerField(default=0)
-    marriage_status = models.CharField(
-        'Marriage Status', choices=MARRIAGE_CHOICE, max_length=100)
-    gender = models.CharField(choices=GENDER_CHOICE, max_length=100)
+    home_estimate = models.BigIntegerField(default=0)
+    marriage_status = models.BooleanField(default=False)
+    gender = models.BooleanField(default=False)
     education = models.CharField(choices=EDUCATION_CHOICE, max_length=100)
     occupation = models.CharField(choices=OCCUPATION_CHOICE, max_length=100)
     avg_travel_time = models.IntegerField(default=0)
-    car_use = models.CharField(
-        choices=(('Commercial', 'Commercial'), ('Private', 'Private')), max_length=100)
+    car_use = models.BooleanField(default=False)
     car_type = models.CharField(choices=CARTYPE_CHOICE, max_length=100)
     car_color_red = models.BooleanField(default=False)
     car_age = models.IntegerField(default=0)
-    urbanicity = models.CharField(
-        choices=(('Rural', 'Rural'), ('Urban', 'Urban')), max_length=100)
-    insured_value = models.FloatField(default=0.0)
-    prev_insurance_amt = models.FloatField(default=0.0)
+    urbanicity = models.BooleanField(default=False)
+    insured_value = models.BigIntegerField(default=0)
+    prev_insurance_amt = models.BigIntegerField(default=0)
     prev_insurance_no = models.IntegerField(default=0)
     prev_claim_revoked = models.BooleanField(default=False)
     risk = models.FloatField(default=0.0, validators=[MaxValueValidator(1.0)])
