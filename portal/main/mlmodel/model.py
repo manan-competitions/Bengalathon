@@ -83,9 +83,14 @@ class ml_model(object):
             else:
                 X_new.append(X[col])
 
+        Y = -1
+        try:
+            Y = X['CLAIM_FLAG']
+        except:
+            pass
+
         X_new = np.array(X_new).reshape(1, 32)
-        #X_new = self.scaler.transform(X_new)
-        return X_new
+        return X_new,Y
 
     def predict(self, X):
         """
@@ -100,8 +105,8 @@ class ml_model(object):
         'CAR_TYPE', 'OCCUPATION', 'EDUCATION' ]
         """
         print(X)
-        X_new = self.pre_process(X)
-        self.save_data(X_new, os.path.join(working_directory, 'new_data.csv'))
+        X_new,Y = self.pre_process(X)
+        self.save_data(X_new, Y, os.path.join(working_directory, 'new_data.csv'))
         X_new = self.scaler.transform(X_new)
         Y_pred = np.zeros((np.shape(X_new)[0]))
 
@@ -119,8 +124,12 @@ class ml_model(object):
             avg = -1
         return round(avg, 2)
 
-    def save_data(self, data, filename='data.csv'):
-        data = data.reshape(32,)
+    def save_data(self, data, Y, filename='data.csv'):
+        print(Y)
+        data = list(data.reshape(32,))
+        if Y!=-1:
+            data.append(Y)
+        print(len(data))
         with open(os.path.join(working_directory, filename), 'a') as f:
             csv.writer(f).writerow(data)
 
@@ -159,7 +168,7 @@ class ml_model(object):
 # Tested:
 
 # data = json.load(
-#     open(os.path.join(working_directory, 'sample_data.json'), 'r'))
+#       open(os.path.join(working_directory, 'sample_data.json'), 'r'))
 # model = ml_model()
 # result = model.predict(data)
 # print(result)
