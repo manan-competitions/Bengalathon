@@ -1,6 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
 {% block body %}
+
 <body>
     <div class="page-container">
         <nav>
@@ -121,8 +122,9 @@
                 </div>
                 <div class="row">
                     <span> Are parents alive?</span>
-                    <p><label> <input type="radio" name="parents_alive" value="Yes" required/> <span>Yes</span> </label></p>
-                    <p><label> <input type="radio" name="parents_alive" value="No" required/> <span>No</span> </label></p>
+                    <p><label> <input type="radio" name="parents_alive" value="Yes" required /> <span>Yes</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="parents_alive" value="No" required /> <span>No</span> </label></p>
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
@@ -132,32 +134,45 @@
                 </div>
                 <div class="row">
                     <span> Marital Status</span>
-                    <p><label> <input type="radio" name="marriage_status" value="Yes" required/> <span>Married</span> </label></p>
-                    <p><label> <input type="radio" name="marriage_status" value="No" required/> <span>Unmarried</span> </label></p>
+                    <p><label> <input type="radio" name="marriage_status" value="Yes" required /> <span>Married</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="marriage_status" value="No" required /> <span>Unmarried</span>
+                        </label></p>
                 </div>
                 <div class="row">
                     <span>Gender</span>
-                    <p><label> <input type="radio" name="gender" value="Yes" required/> <span>Male</span> </label></p>
-                    <p><label> <input type="radio" name="gender" value="No" required/> <span>Female</span> </label></p>
+                    <p><label> <input type="radio" name="gender" value="Yes" required /> <span>Male</span> </label></p>
+                    <p><label> <input type="radio" name="gender" value="No" required /> <span>Female</span> </label></p>
                 </div>
                 <div class="row">
                     <span>Education</span>
-                    <p><label> <input type="radio" name="education" value="Less than High School" required/> <span>Less than High School</span> </label></p>
-                    <p><label> <input type="radio" name="education" value="High School" required/> <span>High School</span> </label></p>
-                    <p><label> <input type="radio" name="education" value="Bachelors" required/> <span>Bachelors</span> </label></p>
-                    <p><label> <input type="radio" name="education" value="Masters" required/> <span>Masters</span> </label></p>
-                    <p><label> <input type="radio" name="education" value="PhD" required/> <span>PhD</span> </label></p>
+                    <p><label> <input type="radio" name="education" value="Less than High School" required /> <span>Less
+                                than High School</span> </label></p>
+                    <p><label> <input type="radio" name="education" value="High School" required /> <span>High School</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="education" value="Bachelors" required /> <span>Bachelors</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="education" value="Masters" required /> <span>Masters</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="education" value="PhD" required /> <span>PhD</span> </label></p>
                 </div>
                 <div class="row">
                     <span>Occupation</span>
-                    <p><label> <input type="radio" name="occupation" value="Manager" required/> <span>Manager</span> </label></p>
-                    <p><label> <input type="radio" name="occupation" value="Doctor" required/> <span>Doctor</span> </label></p>
-                    <p><label> <input type="radio" name="occupation" value="Student" required/> <span>Student</span> </label></p>
-                    <p><label> <input type="radio" name="occupation" value="Blue Collar" required/> <span>Blue Collar</span> </label></p>
-                    <p><label> <input type="radio" name="occupation" value="Lawyer" required/> <span>Lawyer</span> </label></p>
-                    <p><label> <input type="radio" name="occupation" value="Clerical" required/> <span>Clerical</span> </label></p>
-                    <p><label> <input type="radio" name="occupation" value="Professional" required/> <span>Professional</span> </label></p>
-                    <p><label> <input type="radio" name="occupation" value="Home" required/> <span>Home</span> </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Manager" required /> <span>Manager</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Doctor" required /> <span>Doctor</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Student" required /> <span>Student</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Blue Collar" required /> <span>Blue Collar</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Lawyer" required /> <span>Lawyer</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Clerical" required /> <span>Clerical</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Professional" required /> <span>Professional</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="occupation" value="Home" required /> <span>Home</span> </label></p>
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
@@ -167,22 +182,28 @@
                 </div>
                 <div class="row">
                     <span> Use of Car</span>
-                    <p><label> <input type="radio" name="car_use" value="Yes" required/> <span>Commercial</span> </label></p>
-                    <p><label> <input type="radio" name="car_use" value="No" required/> <span>Private</span> </label></p>
+                    <p><label> <input type="radio" name="car_use" value="Yes" required /> <span>Commercial</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="car_use" value="No" required /> <span>Private</span> </label></p>
                 </div>
                 <div class="row">
                     <span>Type of car</span>
-                    <p><label> <input type="radio" name="car_type" value="Van" required/> <span>Van</span> </label></p>
-                    <p><label> <input type="radio" name="car_type" value="Panel Truck" required/> <span>Panel Truck</span> </label></p>
-                    <p><label> <input type="radio" name="car_type" value="Minivan" required/> <span>Minivan</span> </label></p>
-                    <p><label> <input type="radio" name="car_type" value="Sports" required/> <span>Sports</span> </label></p>
-                    <p><label> <input type="radio" name="car_type" value="SUV" required/> <span>SUV</span> </label></p>
-                    <p><label> <input type="radio" name="car_type" value="Pickup" required/> <span>Pickup</span> </label></p>
+                    <p><label> <input type="radio" name="car_type" value="Van" required /> <span>Van</span> </label></p>
+                    <p><label> <input type="radio" name="car_type" value="Panel Truck" required /> <span>Panel Truck</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="car_type" value="Minivan" required /> <span>Minivan</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="car_type" value="Sports" required /> <span>Sports</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="car_type" value="SUV" required /> <span>SUV</span> </label></p>
+                    <p><label> <input type="radio" name="car_type" value="Pickup" required /> <span>Pickup</span>
+                        </label></p>
                 </div>
                 <div class="row">
                     <span>Is your car red in color</span>
-                    <p><label> <input type="radio" name="car_color_red" value="Yes" required/> <span>Yes</span> </label></p>
-                    <p><label> <input type="radio" name="car_color_red" value="No" required/> <span>No</span> </label></p>
+                    <p><label> <input type="radio" name="car_color_red" value="Yes" required /> <span>Yes</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="car_color_red" value="No" required /> <span>No</span> </label></p>
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
@@ -192,8 +213,8 @@
                 </div>
                 <div class="row">
                     <span>Urbanicity</span>
-                    <p><label> <input type="radio" name="urbanicity" value="Yes" required/> <span>Urban</span> </label></p>
-                    <p><label> <input type="radio" name="urbanicity" value="No" required/> <span>Rural</span> </label></p>
+                    <p><label> <input type="radio" name="urbanicity" value="Yes" required /> <span>Urban</span> </label></p>
+                    <p><label> <input type="radio" name="urbanicity" value="No" required /> <span>Rural</span> </label></p>
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
@@ -215,12 +236,15 @@
                 </div>
                 <div class="row">
                     <span>Was the previous claim revoked</span>
-                    <p><label> <input type="radio" name="prev_claim_revoked" value="Yes" required/> <span>Yes</span> </label></p>
-                    <p><label> <input type="radio" name="prev_claim_revoked" value="No" required/> <span>No</span> </label></p>
+                    <p><label> <input type="radio" name="prev_claim_revoked" value="Yes" required /> <span>Yes</span>
+                        </label></p>
+                    <p><label> <input type="radio" name="prev_claim_revoked" value="No" required /> <span>No</span>
+                        </label></p>
                 </div>
                 <div class="row">
                     <div class="col s12 l6">
-                        <center><button class="btn waves-effect waves-light" type="submit" name="calculate">Calculate Risk
+                        <center><button class="btn waves-effect waves-light" type="submit" name="calculate">Calculate
+                                Risk
                                 <i class="material-icons right">send</i>
                             </button></center>
                     </div>
@@ -234,7 +258,7 @@
                 </div>
             </form>
         </div>
-        <div class="container row cust-details">    
+        <div class="container row cust-details">
             <table id="cust-view">
                 <span class="table-title center">
                     <h5>Customer details</h5>
@@ -311,4 +335,3 @@
 </script>
 
 {% endblock %}
-    

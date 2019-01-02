@@ -13,8 +13,10 @@ from django.utils.encoding import smart_str
 
 @login_required
 def index(request):
+    # serialized_customers = serializers.serialize(
+    #     'json', [customer for customer in Customer.objects.filter(company=CompanyProfile.objects.get(user=request.user))])
     serialized_customers = serializers.serialize(
-        'json', [customer for customer in Customer.objects.filter(company=CompanyProfile.objects.get(user=request.user))])
+        'json', [customer for customer in Customer.objects.all()])
     return render(request, 'main/index.html', {'customers': serialized_customers})
 
 
@@ -185,12 +187,17 @@ def add_customer(request):
 def edit_customer(request, pk=None):
     if request.method == 'GET':
         pk = request.GET['customer_id']
+        serialized_customer = ''
         try:
             customer = Customer.objects.get(pk=pk)
             serialized_customer = serializers.serialize('json', [customer, ])
             status = '200'
+            return render(request, 'main/customer_edit.html', {'status': status,
+                                                       'customer': serialized_customer})
         except:
             status = '404'
+            return render(request, 'main/customer_edit.html', {'status': status,
+                                                       'customer': serialized_customer})
     else:
         customer = Customer.objects.get(pk=pk)
         customer_edit_form = CustomerForm(request.POST, instance=customer)
@@ -291,5 +298,4 @@ def edit_customer(request, pk=None):
             serialized_errors = serializers.serialize(
                 'json', [customer_edit_form.errors])
             return JsonResponse({'form_errors': serialized_errors})
-    return render(request, 'main/customer_edit.html', {'status': status,
-                                                       'customer': serialized_customer})
+    
