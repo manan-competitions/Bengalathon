@@ -61,7 +61,7 @@ class ml_model(object):
         X['TRAVTIME'] = X['TRAVTIME']//10
         X['CAR_AGE'] = X['CAR_AGE']//5
         X['HOME_VAL'] = (np.log(2+X['HOME_VAL']//100000))//0.5
-        X['BLUE_BOOK'] = (np.log(X['BLUE_BOOK']//1000))//1
+        X['BLUE_BOOK'] = (np.log(1+X['BLUE_BOOK']//1000))//1
         X['OLD_CLAIM'] = (np.log(1+X['OLD_CLAIM']//100))//1
 
         X_new = []
