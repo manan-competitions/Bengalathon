@@ -24,6 +24,7 @@ urlpatterns = [
     path('customer/add/', views.add_customer,  name='add_customer'),
     path('customer/edit/<int:pk>/', views.edit_customer,  name='edit_customer'),
     path('customer/edit/', views.edit_customer,  name='edit_customer_get'),
+    path('customer/delete/<int:pk>/', views.delete_customer,  name='delete_customer'),
     path('accounts/register/', views.company_register, name='company_register'),
     path('accounts/login/', views.company_login, name='company_login'),
     path('accounts/logout/', views.company_logout, name='company_logout'),

@@ -298,4 +298,9 @@ def edit_customer(request, pk=None):
             serialized_errors = serializers.serialize(
                 'json', [customer_edit_form.errors])
             return JsonResponse({'form_errors': serialized_errors})
-    
+
+@login_required    
+def delete_customer(request, pk):
+    customer = Customer.objects.get(pk=pk)
+    customer.delete()
+    return HttpResponseRedirect(reverse("index"))
