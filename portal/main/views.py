@@ -30,6 +30,7 @@ def company_register(request):
             company_profile = company_profile_form.save(commit=False)
             company_profile.user = user
             company_profile.save()
+
             if user.is_active:
                 login(request, user)
                 return HttpResponseRedirect(reverse('index'))
@@ -78,74 +79,8 @@ def add_customer(request):
         if customer_form.is_valid():
             print(customer_form)
             customer = customer_form.save(commit=False)
-            model = ml_model()
-
-            education_less_highschool = 0
-            education_highschool = 0
-            education_bachelors = 0
-            education_masters = 0
-            education_phd = 0
-            if customer.education == 'Less than High School':
-                education_less_highschool = 1
-            elif customer.education == 'High School':
-                education_highschool = 1
-            elif customer.education == 'Bachelors':
-                education_bachelors = 1
-            elif customer.education == 'Masters':
-                education_masters = 1
-            elif customer.education == 'PhD':
-                education_phd = 1
-
-            car_type_minivan = 0
-            car_type_panel_truck = 0
-            car_type_pickup = 0
-            car_type_sports_car = 0
-            car_type_van = 0
-            car_type_suv = 0
-            if customer.car_type == 'Van':
-                car_type_minivan = 1
-            elif customer.car_type == 'Panel Truck':
-                car_type_panel_truck = 1
-            elif customer.car_type == 'Pickup':
-                car_type_pickup = 1
-            elif customer.car_type == 'Sports Car':
-                car_type_sports_car = 1
-            elif customer.car_type == 'Van':
-                car_type_van = 1
-            elif customer.car_type == 'SUV':
-                car_type_suv = 1
-
-            occupation_clerical = 0
-            occupation_doctor = 0
-            occupation_home = 0
-            occupation_lawyer = 0
-            occupation_manager = 0
-            occupation_professional = 0
-            occupation_student = 0
-            occupation_blue_collar = 0
-            if customer.occupation == 'Clerical':
-                occupation_clerical = 1
-            elif customer.occupation == 'Doctor':
-                occupation_doctor = 1
-            elif customer.occupation == 'Home':
-                occupation_home = 1
-            elif customer.occupation == 'Lawyer':
-                occupation_lawyer = 1
-            elif customer.occupation == 'Manager':
-                occupation_manager = 1
-            elif customer.occupation == 'Professional':
-                occupation_professional = 1
-            elif customer.occupation == 'Student':
-                occupation_student = 1
-            elif customer.occupation == 'Blue Collar':
-                occupation_blue_collar = 1
-
-            X = [customer.no_children_drive, customer.age, customer.no_kids, customer.income, customer.parents_alive, customer.home_estimate, customer.marriage_status, customer.gender, customer.avg_travel_time, customer.occupation, customer.car_use, customer.car_color_red, customer.prev_insurance_amt, customer.prev_insurance_no, customer.prev_claim_revoked, customer.insured_value, customer.car_age,
-                 customer.urbanicity, education_highschool, education_bachelors, education_masters, education_phd, education_less_highschool, car_type_minivan, car_type_panel_truck, car_type_pickup, car_type_sports_car, car_type_van, car_type_suv, occupation_clerical, occupation_doctor, occupation_home, occupation_lawyer, occupation_manager, occupation_professional, occupation_student, occupation_blue_collar, ]
-
             customer.company = company_profile
-            risk = model.predict(X)
-            customer.risk = risk
+            customer.risk = risk_prediction(customer)
             customer.save()
             return HttpResponseRedirect(reverse('index'))
         else:
@@ -169,7 +104,9 @@ def edit_customer(request, pk=None):
         customer = Customer.objects.get(pk=pk)
         customer_edit_form = CustomerForm(request.POST, instance=customer)
         if customer_edit_form.is_valid():
-            customer_edit_form.save()
+            customer = customer_edit_form.save(commit=False)
+            customer.risk = risk_prediction(customer)
+            customer.save()
             return HttpResponseRedirect(reverse('index'))
         else:
             serialized_errors = serializers.serialize(
@@ -177,3 +114,76 @@ def edit_customer(request, pk=None):
             return JsonResponse({'form_errors': serialized_errors})
     return render(request, 'main/customer_edit.html', {'status': status,
                                                        'customer': serialized_customer})
+
+
+def risk_prediction(customer):
+    model = ml_model()
+    education = 0
+    if customer.education == 'Less than High School':
+        education = 0
+    elif customer.education == 'High School':
+        education = 1
+    elif customer.education == 'Bachelors':
+        education = 2
+    elif customer.education == 'Masters':
+        education = 3
+    elif customer.education == 'PhD':
+        education = 4
+
+    car_type = 0
+    if customer.car_type == 'Mini Van':
+        car_type = 0
+    elif customer.car_type == 'Panel Truck':
+        car_type = 1
+    elif customer.car_type == 'Pickup':
+        car_type = 2
+    elif customer.car_type == 'Sports Car':
+        car_type = 3
+    elif customer.car_type == 'Van':
+        car_type = 4
+    elif customer.car_type == 'SUV':
+        car_type = 5
+
+    occupation = 0
+    if customer.occupation == 'Clerical':
+        occupation = 0
+    elif customer.occupation == 'Doctor':
+        occupation = 1
+    elif customer.occupation == 'Home':
+        occupation = 2
+    elif customer.occupation == 'Lawyer':
+        occupation = 3
+    elif customer.occupation == 'Manager':
+        occupation = 4
+    elif customer.occupation == 'Professional':
+        occupation = 5
+    elif customer.occupation == 'Student':
+        occupation = 6
+    elif customer.occupation == 'Blue Collar':
+        occupation = 7
+
+    X = {}
+    X['KIDSDRIV'] = customer.no_children_drive
+    X['AGE'] = customer.age
+    X['HOMEKIDS'] = customer.no_kids
+    X['INCOME'] = customer.income
+    X['PARENT1'] = customer.parents_alive
+    X['HOME_VAL'] = customer.home_estimate
+    X['MSTATUS'] = customer.marriage_status
+    X['GENDER'] = customer.gender
+    X['TRAVTIME'] = customer.avg_travel_time
+    X['CAR_USE'] = customer.car_use
+    X['BLUE_BOOK'] =  customer.insured_value
+    X['RED_CAR'] = customer.car_color_red
+    X['OLD_CLAIM'] = customer.prev_insurance_amt
+    X['CLM_FREQ'] = customer.prev_insurance_no
+    X['REVOKED'] = customer.prev_claim_revoked
+    X['CAR_AGE'] = customer.car_age
+    X['URBAN_CITY'] = customer.urbanicity
+    X['EDUCATION'] = education
+    X['CAR_TYPE'] = car_type
+    X['OCCUPATION'] = occupation
+
+    risk = model.predict(X)
+
+    return risk

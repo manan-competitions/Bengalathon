@@ -14,18 +14,21 @@ import os
 
 working_directory = os.path.dirname((os.path.abspath(__file__)))
 
+
 class ml_model(object):
     def __init__(self):
         try:
-            self.models = pickle.load(open(os.path.join(working_directory, 'model.pkl'),'rb'))
+            self.models = pickle.load(
+                open(os.path.join(working_directory, 'model.pkl'), 'rb'))
         except:
-            clf1 = SVC(gamma='auto',probability=True,class_weight='balanced')
+            clf1 = SVC(gamma='auto', probability=True, class_weight='balanced')
             clf2 = RandomForestClassifier(n_estimators=1000, random_state=42)
             clf3 = KNeighborsClassifier(n_neighbors=10)
             clf4 = AdaBoostClassifier()
-            self.models = [clf1,clf2,clf3,clf4]
+            self.models = [clf1, clf2, clf3, clf4]
 
-        self.scaler = pickle.load(open(os.path.join(working_directory,'scaler.pkl'),'rb'))
+        self.scaler = pickle.load(
+            open(os.path.join(working_directory, 'scaler.pkl'), 'rb'))
 
     def pre_process(self, X):
         """
@@ -49,9 +52,9 @@ class ml_model(object):
 
         """
 
-        index = [ 'KIDSDRIV', 'AGE', 'HOMEKIDS', 'INCOME', 'PARENT1', 'HOME_VAL', 'MSTATUS', 'GENDER', 'TRAVTIME',
-        'CAR_USE', 'BLUE_BOOK', 'RED_CAR', 'OLD_CLAIM', 'CLM_FREQ', 'REVOKED', 'CAR_AGE', 'URBAN_CITY',
-        'CAR_TYPE', 'OCCUPATION', 'EDUCATION' ]
+        index = ['KIDSDRIV', 'AGE', 'HOMEKIDS', 'INCOME', 'PARENT1', 'HOME_VAL', 'MSTATUS', 'GENDER', 'TRAVTIME',
+                 'CAR_USE', 'BLUE_BOOK', 'RED_CAR', 'OLD_CLAIM', 'CLM_FREQ', 'REVOKED', 'CAR_AGE', 'URBAN_CITY',
+                 'CAR_TYPE', 'OCCUPATION', 'EDUCATION']
 
         X['AGE'] = X['AGE']//10
         X['INCOME'] = np.log(1+X['INCOME'])//1
@@ -80,11 +83,11 @@ class ml_model(object):
             else:
                 X_new.append(X[col])
 
-        X_new = np.array(X_new).reshape(1,32)
+        X_new = np.array(X_new).reshape(1, 32)
         #X_new = self.scaler.transform(X_new)
         return X_new
 
-    def predict(self,X):
+    def predict(self, X):
         """
         Arguments:
             X(dict): X-values for Prediction
@@ -97,12 +100,12 @@ class ml_model(object):
         'CAR_TYPE', 'OCCUPATION', 'EDUCATION' ]
         """
         X_new = self.pre_process(X)
-        self.save_data(X_new, os.path.join(working_directory,'new_data.csv'))
+        self.save_data(X_new, os.path.join(working_directory, 'new_data.csv'))
         X_new = self.scaler.transform(X_new)
         Y_pred = np.zeros((np.shape(X_new)[0]))
 
         for model in self.models:
-            Y_pred += model.predict_proba(X_new)[:,1]
+            Y_pred += model.predict_proba(X_new)[:, 1]
 
         if Y_pred <= 2.5:
             return 0
@@ -111,46 +114,47 @@ class ml_model(object):
         else:
             return -1
 
-    def save_data(self,data,filename='data.csv'):
+    def save_data(self, data, filename='data.csv'):
         data = data.reshape(32,)
-        with open(os.path.join(working_directory,filename),'a') as f:
+        with open(os.path.join(working_directory, filename), 'a') as f:
             csv.writer(f).writerow(data)
 
-    def train(self,data_file='data.csv',model_file='model.pkl'):
-        X = pd.read_csv(os.path.join(working_directory,data_file))
-        train,test = train_test_split(X,test_size=0.3)
+    def train(self, data_file='data.csv', model_file='model.pkl'):
+        X = pd.read_csv(os.path.join(working_directory, data_file))
+        train, test = train_test_split(X, test_size=0.3)
 
         train_Y = train['CLAIM_FLAG']
-        train_X = train.drop(['CLAIM_FLAG'],axis=1)
+        train_X = train.drop(['CLAIM_FLAG'], axis=1)
         train_X = self.scaler.transform(train_X)
 
         test_Y = test['CLAIM_FLAG']
-        test_X = test.drop(['CLAIM_FLAG'],axis=1)
+        test_X = test.drop(['CLAIM_FLAG'], axis=1)
         test_X = self.scaler.transform(test_X)
 
-        clf1 = SVC(gamma='auto',probability=True,class_weight='balanced')
+        clf1 = SVC(gamma='auto', probability=True, class_weight='balanced')
         clf2 = RandomForestClassifier(n_estimators=1000, random_state=42)
         clf3 = KNeighborsClassifier(n_neighbors=10)
         clf4 = AdaBoostClassifier()
-        new_models = [clf1,clf2,clf3,clf4]
+        new_models = [clf1, clf2, clf3, clf4]
 
         for model in new_models:
-            model.fit(train_X,train_Y)
+            model.fit(train_X, train_Y)
 
         new_models.append(clf1)
         new_models.append(clf1)
         new_models.append(clf2)
 
-        pickle.dump(new_models,open(os.path.join(working_directory,model_file),'wb'))
+        pickle.dump(new_models, open(os.path.join(
+            working_directory, model_file), 'wb'))
 
-#model = ml_model()
-#model.train()
+# model = ml_model()
+# model.train()
 
 
 # Tested:
 
-data = json.load(open(os.path.join(working_directory, 'sample_data.json'),'r'))
-print(data)
-model = ml_model()
-result = model.predict(data)
-print(result)
+# data = json.load(
+#     open(os.path.join(working_directory, 'sample_data.json'), 'r'))
+# model = ml_model()
+# result = model.predict(data)
+# print(result)
