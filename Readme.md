@@ -18,6 +18,21 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
+- Training the ML Model For the First Time
+
+  - Uncomment the following lines of code in portal/main/mlmodel/model.py
+
+    ```python
+    # model = ml_model()
+    # model.train()
+    ```
+
+  - Run the script
+
+    ```bash
+    python portal/main/mlmodel/model.py
+    ```
+
 - Run Server
 
 ```bash
