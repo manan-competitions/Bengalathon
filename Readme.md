@@ -23,3 +23,9 @@ python manage.py createsuperuser
 ```bash
 python manage.py runserver
 ```
+
+- Demonstration
+
+  - Dummy Company
+    - Username: amul
+    - Password: password
