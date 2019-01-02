@@ -104,15 +104,19 @@ class ml_model(object):
         X_new = self.scaler.transform(X_new)
         Y_pred = np.zeros((np.shape(X_new)[0]))
 
+        vals= []
         for model in self.models:
             Y_pred += model.predict_proba(X_new)[:, 1]
+            vals.append(model.predict_proba(X_new)[:, 1][0])
 
+        vals = sorted(vals)
         if Y_pred <= 2.5:
-            return 0
+            avg = (vals[0]+vals[1]+vals[2])/3
         if 4 < Y_pred:
-            return 1
+            avg = (vals[-1]+vals[-2]+vals[-3])/3
         else:
-            return -1
+            avg = -1
+        return avg
 
     def save_data(self, data, filename='data.csv'):
         data = data.reshape(32,)
