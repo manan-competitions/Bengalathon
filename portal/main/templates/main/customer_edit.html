@@ -28,7 +28,7 @@
     <div id="particles-js"></div>
 
     <div class="row container formA">
-        <form class="col s12" method="POST" id="edit_form" action="">
+        <form class="col s12" method="POST" id="edit_form" action="" onsubmit="return checkEditForm(this)">
             {% csrf_token %}
             <div class="row">
                 <h5>Form-A</h5>
@@ -65,7 +65,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s12 l6">
-                    <input type="number" name="income" id="income">
+                    <input type="number" name="income" id="income" min="0">
                     <label for="income">Income(in INR)</label>
                 </div>
             </div>
@@ -78,7 +78,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s12 l6">
-                    <input type="number" name="home_estimate" id="home_estimate">
+                    <input type="number" name="home_estimate" id="home_estimate" min="0">
                     <label for="home_estimate">Value of home(in INR)</label>
                 </div>
             </div>
@@ -127,7 +127,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s12 l6">
-                    <input type="number" name="avg_travel_time" id="avg_travel_time">
+                    <input type="number" name="avg_travel_time" id="avg_travel_time" min="0">
                     <label for="avg_travel_time">Average Travel Time (in min)</label>
                 </div>
             </div>
@@ -158,7 +158,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s12 l6">
-                    <input type="number" name="car_age" id="car_age">
+                    <input type="number" name="car_age" id="car_age" min="0">
                     <label for="car_age">What is the age of car(in years)</label>
                 </div>
             </div>
@@ -169,19 +169,19 @@
             </div>
             <div class="row">
                 <div class="input-field col s12 l6">
-                    <input type="number" name="insured_value" id="insured_value">
+                    <input type="number" name="insured_value" id="insured_value" min="0">
                     <label for="insured_value">Insured declared value</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12 l6">
-                    <input type="number" name="prev_insurance_amt" id="prev_insurance_amt">
+                    <input type="number" name="prev_insurance_amt" id="prev_insurance_amt" min="0">
                     <label for="prev_insurance_amt">Claim amount from previous insurance</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12 l6">
-                    <input type="number" name="prev_insurance_no" id="prev_insurance_no">
+                    <input type="number" name="prev_insurance_no" id="prev_insurance_no" min="0">
                     <label for="prev_insurance_no">No. of times insurance claimed from previous company</label>
                 </div>
             </div>
@@ -285,6 +285,14 @@
         labels.forEach( label => {
             label.className += ' active';
         });
+
+        function checkEditForm(form) {
+        if(form.no_children_drive.value > form.no_children) {
+            alert('No of children driving is more than total no of children');
+            return false;
+        }
+        return true;
+    }
     });
 </script>
 
