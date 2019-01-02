@@ -14,7 +14,7 @@ from django.utils.encoding import smart_str
 @login_required
 def index(request):
     serialized_customers = serializers.serialize(
-        'json', [customer for customer in Customer.objects.all()])
+        'json', [customer for customer in Customer.objects.filter(company=CompanyProfile.objects.get(user=request.user))])
     return render(request, 'main/index.html', {'customers': serialized_customers})
 
 
@@ -36,12 +36,12 @@ def company_register(request):
                 login(request, user)
                 return HttpResponseRedirect(reverse('index'))
             else:
-                return render(request, 'main/company_login.html', {'user_form_errors': user_form.errors,
+                return render(request, 'main/company_register.html', {'user_form_errors': user_form.errors,
                                                                    'company_profile_form_errors': company_profile_form.errors})
         else:
-            return render(request, 'main/company_login.html', {'user_form_errors': user_form.errors,
+            return render(request, 'main/company_register.html', {'user_form_errors': user_form.errors,
                                                                'company_profile_form_errors': company_profile_form.errors})
-    return render(request, 'main/company_login.html', {})
+    return render(request, 'main/company_register.html', {})
 
 
 def company_login(request):

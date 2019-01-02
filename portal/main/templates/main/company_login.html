@@ -68,101 +68,13 @@
                     </div>
 
                     <div class="row redirect-text">
-                        <span class="black-text" id="register-redirect"> CREATE ACCOUNT </span>
+                        <a href="{% url 'company_register' %}" class="black-text"> CREATE ACCOUNT </span>
                     </div>
                 </form>
-
-            </div>
-        </div>
-
-        <div class="login-container" id="register">
-
-            <div class="row">
-
-                <div class="col s12 form-title">
-                    <center> <span class="form-title"> Register to portal </span></center>
-                </div>
-
-                <form class="col s12" method="post" action="{% url 'company_register' %}">
-                    {% csrf_token %}
-                    <span class="error-msg">{{user_form_errors}}</span>
-                    <span class="error-msg">{{company_profile_form_errors}}</span>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input type="text" class="validate" name="name" id="reg-name" required>
-                            <label for="reg-name">Enter your full name</label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input type="text" name="username" id="reg-username" class="validate" required>
-                            <label for="reg-username"> Enter your username</label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input type="email" name="email" id="reg-email" class="validate" required>
-                            <label for="reg-email"> Enter your email</label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input type="password" id="reg-password" name="password" class="validate" required>
-                            <label for="reg-password">Enter your password</label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <center>
-                            <div class="input-field col s12">
-                                <button class="btn waves-effect waves-light white" type="submit" name="register">
-                                    Register
-                                </button>
-                            </div>
-                        </center>
-                    </div>
-
-                    <div class="row redirect-text">
-                        <span class="black-text" id="login-redirect"> ALREADY HAVE AN ACCOUNT? </span>
-                    </div>
-                </form>
-
 
             </div>
         </div>
     </div>
 
 </body>
-
-<script>
-    var loginForm = document.getElementById('login');
-    var registerForm = document.getElementById('register');
-    var regLink = document.getElementById('register-redirect');
-    var loginLink = document.getElementById('login-redirect');
-    registerForm.style.display = 'none';
-
-    regLink.addEventListener('click', () => {
-        registerForm.style.display = 'block';
-        loginForm.style.display = 'none';
-    });
-
-    loginLink.addEventListener('click', () => {
-        loginForm.style.display = 'block';
-        registerForm.style.display = 'none';
-    });
-
-    $(document).ready(() => {
-        $("button").click(function () {
-            $(".login-button").addClass("hide");
-            $(".sa-success").addClass("hide");
-            setTimeout(function () {
-                $(".sa-success").removeClass("hide");
-                // $(".login-button").removeClass("hide");
-            }, 10);
-        });
-    });
-</script>
 </html>

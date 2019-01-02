@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bengalathon</title>
+    <link rel="stylesheet" href="{% static 'main/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/materialize.min.css' %}">
+    <script src="{% static 'main/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'main/js/materialize.min.js' %}"></script>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="row heading">
+            <div class="col s12">
+                <center>
+                    <span style="font-family: 'Roboto Slab', serif;">
+                        <h3> Know what is best for your organization!</h3>
+                    </span>
+                </center>
+            </div>
+        </div>
+
+        <div class="login-container" id="register">
+
+            <div class="row">
+
+                <div class="col s12 form-title">
+                    <center> <span class="form-title"> Register to portal </span></center>
+                </div>
+
+                <form class="col s12" method="post" action="{% url 'company_register' %}">
+                    {% csrf_token %}
+                    <span class="error-msg">{{user_form_errors}}</span>
+                    <span class="error-msg">{{company_profile_form_errors}}</span>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="text" class="validate" name="name" id="reg-name" required>
+                            <label for="reg-name">Enter your full name</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="text" name="username" id="reg-username" class="validate" required>
+                            <label for="reg-username"> Enter your username</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="email" name="email" id="reg-email" class="validate" required>
+                            <label for="reg-email"> Enter your email</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="password" id="reg-password" name="password" class="validate" required>
+                            <label for="reg-password">Enter your password</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <center>
+                            <div class="input-field col s12">
+                                <button class="btn waves-effect waves-light white" type="submit" name="register">
+                                    Register
+                                </button>
+                            </div>
+                        </center>
+                    </div>
+
+                    <div class="row redirect-text">
+                        <a href="{% url 'company_login' %}" class="black-text" id="login-redirect"> ALREADY HAVE AN
+                            ACCOUNT? </span>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
