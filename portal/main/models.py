@@ -3,7 +3,6 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 
 
-NO_CHILDREN_CHOICE = [(i, i) for i in range(11)]
 EDUCATION_CHOICE = (('Less than High School', 'Less than High School'),
                     ('High School', 'High School'),
                     ('Bachelors', 'Bachelors'),
@@ -35,12 +34,12 @@ class CompanyProfile(models.Model):
 
 class Customer(models.Model):
     company = models.ForeignKey('CompanyProfile', on_delete=models.CASCADE)
-    name = models.CharField('Customer Name', max_length=100)
+    name = models.CharField(max_length=100)
     dob = models.DateField()
     age = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(100)], default=1)
-    no_children = models.IntegerField(choices=NO_CHILDREN_CHOICE)
-    no_children_drive = models.IntegerField(choices=NO_CHILDREN_CHOICE)
+    no_children = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)])
+    no_children_drive = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)])
     income = models.FloatField(default=0)
     parents_alive = models.BooleanField(default=False)
     home_estimate = models.FloatField(default=0)
