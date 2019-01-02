@@ -57,11 +57,11 @@
         </div>
 
         <div class="row container hide editForm">
-            <form class="col s12" method="GET" action="{% url 'edit_customer_get' %}">
+            <form class="col s12" method="GET" action="{% url 'edit_customer_get' %}" onsubmit="return checkEditForm(this)">
                 <h5>Edit customer details</h5>
                 <div class="row">
                     <div class="input-field col s12 l6">
-                        <input type="number" name="customer_id">
+                        <input type="number" name="customer_id" id="customer_id">
                         <label for="customer_id">Enter id</label>
                     </div>
                 </div>
@@ -76,14 +76,14 @@
         </div>
 
         <div class="row container formA hide">
-            <form class="col s12" method="POST" action="{% url 'add_customer' %}">
+            <form class="col s12" method="POST" action="{% url 'add_customer' %}" onsubmit="return checkAddForm(this)">
                 {% csrf_token %}
                 <div class="row">
                     <h5>Form-A</h5>
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
-                        <input type="text" name="name" class="validate" required>
+                        <input type="text" name="name" id="name" class="validate" required>
                         <label for="name">Name</label>
                     </div>
                 </div>
@@ -95,25 +95,25 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
-                        <input type="number" name="age" min="1" max="100">
+                        <input type="number" id="age" name="age" min="1" max="100">
                         <label for="age">Age</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
-                        <input type="number" name="no_children" min="0" max="10" required>
+                        <input type="number" name="no_children" min="0" max="10" id="no_children" required>
                         <label for="no_children">Number of kids</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
-                        <input type="number" name="no_children_drive" min="0" max="10" required>
+                        <input type="number" name="no_children_drive" min="0" max="10" id="no_children_drive" required>
                         <label for="no_children_drive">How many of your kids drive</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
-                        <input type="number" name="income" required>
+                        <input type="number" name="income" id="income" required>
                         <label for="income">Income(in INR)</label>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
-                        <input type="number" name="home_estimate" required>
+                        <input type="number" name="home_estimate" id="home_estimate" required>
                         <label for="home_estimate">Value of home(in INR)</label>
                     </div>
                 </div>
@@ -160,7 +160,7 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
-                        <input type="number" name="avg_travel_time" required>
+                        <input type="number" name="avg_travel_time" id="avg_travel_time" required>
                         <label for="avg_travel_time">Average Travel Time (in min)</label>
                     </div>
                 </div>
@@ -185,7 +185,7 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
-                        <input type="number" name="car_age" required>
+                        <input type="number" name="car_age" id="car_age" required>
                         <label for="car_age">What is the age of car(in years)</label>
                     </div>
                 </div>
@@ -196,19 +196,19 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
-                        <input type="number" name="insured_value" required>
+                        <input type="number" name="insured_value" id="insured_value" required>
                         <label for="insured_value">Insured declared value</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
-                        <input type="number" name="prev_insurance_amt" required>
+                        <input type="number" name="prev_insurance_amt" id="prev_insurance_amt" required>
                         <label for="prev_insurance_amt">Claim amount from previous insurance</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
-                        <input type="number" name="prev_insurance_no" required>
+                        <input type="number" name="prev_insurance_no" id="prev_insurance_no" required>
                         <label for="prev_insurance_no">No. of times insurance claimed from previous company</label>
                     </div>
                 </div>
@@ -274,8 +274,26 @@
         customer_fields = customer['fields'];
         let id = customer['pk'];
         view_table = document.getElementById('cust-view');
-        view_table.innerHTML += '<tr id="cust' + customer['pk'] + '"><td>' + id + '</td><td><a href="/customer/view/' + id + '">' + customer_fields['name'] + '</a></td><td>' + customer_fields['age'] + '</td><td>' + customer_fields['risk']*100 + '%</td></tr>';
+        view_table.innerHTML += '<tr class="customer" id="cust' + customer['pk'] + '"><td>' + id + '</td><td><a href="/customer/view/' + id + '">' + customer_fields['name'] + '</a></td><td>' + customer_fields['age'] + '</td><td>' + customer_fields['risk']*100 + '%</td></tr>';
     });
+
+    function checkEditForm(form) {
+        let id = form.customer_id.value;
+        let users = document.getElementsByClassName('customer').length;
+        if(id > users) {
+            alert('Enter a valid id');
+            return false;
+        }
+        return true;
+    }
+
+    function checkAddForm(form) {
+        if(form.no_children_drive.value > form.no_children) {
+            alert('No of children driving is more than total no of children');
+            return false;
+        }
+        return true;
+    }
     
 </script>
 
