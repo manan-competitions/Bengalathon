@@ -59,6 +59,10 @@ canvas {
     color: darkcyan;
 }
 
+.active-card {
+    background: #e3e3e3 !important;
+}
+
 @media all and (max-width: 1000px) {
     .card p {
         display: none;
