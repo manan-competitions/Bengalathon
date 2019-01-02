@@ -1,0 +1,22 @@
+{
+    "KIDSDRIV": 5,
+    "AGE": 5,
+    "HOMEKIDS": 5,
+    "INCOME": 5.0,
+    "PARENT1": 1,
+    "HOME_VAL": 5.0,
+    "MSTATUS": 1,
+    "GENDER": 1,
+    "TRAVTIME": 5,
+    "CAR_USE": 1,
+    "BLUE_BOOK": 5.0,
+    "RED_CAR": 1,
+    "OLD_CLAIM": 5.0,
+    "CLM_FREQ": 5,
+    "REVOKED": 1,
+    "CAR_AGE": 5,
+    "URBAN_CITY": 1,
+    "EDUCATION": 0,
+    "CAR_TYPE": 4,
+    "OCCUPATION": 4
+}

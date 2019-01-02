@@ -1,132 +1,165 @@
-"""
-Written by Manan Soni
-github: MananSoni42
-"""
-
 import numpy as np
 import pandas as pd
 import sklearn
-from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 import pickle
+import json
 import csv
 import os
 
+
+working_directory = os.path.dirname((os.path.abspath(__file__)))
+
+
 class ml_model(object):
-    """
-    Class ml_model
+    def __init__(self):
+        try:
+            self.models = pickle.load(
+                open(os.path.join(working_directory, 'model.pkl'), 'rb'))
+        except:
+            clf1 = SVC(gamma='auto', probability=True, class_weight='balanced')
+            clf2 = RandomForestClassifier(n_estimators=1000, random_state=42)
+            clf3 = KNeighborsClassifier(n_neighbors=10)
+            clf4 = AdaBoostClassifier()
+            self.models = [clf1, clf2, clf3, clf4]
 
-    Attributes:
-        nn: Neural Network used for prediction
+        self.scaler = pickle.load(
+            open(os.path.join(working_directory, 'scaler.pkl'), 'rb'))
 
-    Methods:
-        train(X,Y)                 : returns None
-        eval(X,Y)                  : returns {"accuracy":  , "f-score": }
-        predict(X,save=False)      : returns [predictions]
-        save(filename='model.pkl') : returns None
-        load(filename='model.pkl') : returns None
-    """
-    def __init__(self, layers=(512,128,32), lrate=0.001, alpha=0.03, max_iter=5000):
+    def pre_process(self, X):
         """
-        __init__(layers=(512,128,32), lrate=0.001, alpha=0.03, max_iter=5000)
-        Initializes the Neural Network
+        pre_process(X)
+        Convert user input Data to model compatible data
 
-        Arguements:
-            layers (tuple): number of units in each hidden layer
-            lrate(int)    : learning rate
-            alpha(int)    : alpha (regularization constant)
-            max_iter(int) : maximum number of iterations for training
+        Arguments:
+            X(dict): X-values for training/prediction
         Returns:
-            None
-        """
-        self.nn = MLPClassifier(hidden_layer_sizes = layers, activation = 'logistic', learning_rate_init = lrate, alpha = alpha, max_iter = max_iter)
+            Numpy Array
 
-    def train(self, X, Y):
-        """
-        train(X,Y)
-        Train the Neural Network
+        following keys are required in X:
+        [ 'KIDSDRIV', 'AGE', 'HOMEKIDS', 'INCOME', 'PARENT1', 'HOME_VAL', 'MSTATUS', 'GENDER', 'TRAVTIME',
+        'CAR_USE', 'BLUE_BOOK', 'RED_CAR', 'OLD_CLAIM', 'CLM_FREQ', 'REVOKED', 'CAR_AGE', 'URBAN_CITY',
+        'CAR_TYPE', 'OCCUPATION', 'EDUCATION' ]
 
-        Arguements:
-            X(array): X-values for training. Shape=(n,44) n is number of rows
-            Y(array): Y-values for training. Shape=(n,1) n is number of
+        Options:
+        CAR_TYPE: [Minivan(0), Panel Truck(1), Pickup(2), Sports Car(3), Van(4), SUV(5)]
+        OCCUPATION: [Clerical(0), Doctor(1), Home Maker(2), Lawyer(3), Manager(4), Professional(5), Student(6), Blue_Collar(7)]
+        EDUCATION: [<High_School(0), High_School(1), Bachelors(2), Masters(3), PhD(4),]
+
+        """
+
+        index = ['KIDSDRIV', 'AGE', 'HOMEKIDS', 'INCOME', 'PARENT1', 'HOME_VAL', 'MSTATUS', 'GENDER', 'TRAVTIME',
+                 'CAR_USE', 'BLUE_BOOK', 'RED_CAR', 'OLD_CLAIM', 'CLM_FREQ', 'REVOKED', 'CAR_AGE', 'URBAN_CITY',
+                 'CAR_TYPE', 'OCCUPATION', 'EDUCATION']
+
+        X['AGE'] = X['AGE']//10
+        X['INCOME'] = np.log(1+X['INCOME'])//1
+        X['TRAVTIME'] = X['TRAVTIME']//10
+        X['CAR_AGE'] = X['CAR_AGE']//5
+        X['HOME_VAL'] = (np.log(2+X['HOME_VAL']//100000))//0.5
+        X['BLUE_BOOK'] = (np.log(1+X['BLUE_BOOK']//1000))//1
+        X['OLD_CLAIM'] = (np.log(1+X['OLD_CLAIM']//100))//1
+
+        X_new = []
+        for col in index:
+
+            if col == 'CAR_TYPE':
+                for i in range(6):
+                    if i == X[col]:
+                        X_new.append(1)
+                    else:
+                        X_new.append(0)
+
+            elif col == 'OCCUPATION':
+                for i in range(8):
+                    if i == X[col]:
+                        X_new.append(1)
+                    else:
+                        X_new.append(0)
+            else:
+                X_new.append(X[col])
+
+        X_new = np.array(X_new).reshape(1, 32)
+        #X_new = self.scaler.transform(X_new)
+        return X_new
+
+    def predict(self, X):
+        """
+        Arguments:
+            X(dict): X-values for Prediction
         Returns:
-            None
+            prediction(float): 1,0,-1
+
+        following keys are required in X:
+        [ 'KIDSDRIV', 'AGE', 'HOMEKIDS', 'INCOME', 'PARENT1', 'HOME_VAL', 'MSTATUS', 'GENDER', 'TRAVTIME',
+        'CAR_USE', 'BLUE_BOOK', 'RED_CAR', 'OLD_CLAIM', 'CLM_FREQ', 'REVOKED', 'CAR_AGE', 'URBAN_CITY',
+        'CAR_TYPE', 'OCCUPATION', 'EDUCATION' ]
         """
-        self.nn.fit(X,Y)
+        print(X)
+        X_new = self.pre_process(X)
+        self.save_data(X_new, os.path.join(working_directory, 'new_data.csv'))
+        X_new = self.scaler.transform(X_new)
+        Y_pred = np.zeros((np.shape(X_new)[0]))
 
-    def eval(self, X ,Y):
-        """
-        eval(X,Y)
-        Evaluate the perfomance of the Neural Network
+        vals= []
+        for model in self.models:
+            Y_pred += model.predict_proba(X_new)[:, 1]
+            vals.append(model.predict_proba(X_new)[:, 1][0])
 
-        Arguements:
-            X(array): X-values for evaluation. Shape=(n,44) n is number of rows
-            Y(array): Y-values for evaluation. Shape=(n,1) n is number of
-        Returns:
-            Dictionary with keys "accuracy" and  "f-score"
-            {"accuracy": float, "f-score": float}
-        """
-        Y_pred = self.nn.predict(X)
-        acc = sklearn.metrics.accuracy_score(np.array(Y_pred), np.array(Y))
-        f = sklearn.metrics.f1_score(np.array(Y),np.array(Y_pred))
-        return {"accuracy": acc, "f-score": f}
+        vals = sorted(vals)
+        if Y_pred <= 2.5:
+            avg = (vals[0]+vals[1]+vals[2])/3
+        elif 4 < Y_pred:
+            avg = (vals[-1]+vals[-2]+vals[-3])/3
+        else:
+            avg = -1
+        return round(avg, 2)
 
-    def predict(self, X, save=False):
-        """
-        predict(X, save=False)
-        Predict Y values from given X values
+    def save_data(self, data, filename='data.csv'):
+        data = data.reshape(32,)
+        with open(os.path.join(working_directory, filename), 'a') as f:
+            csv.writer(f).writerow(data)
 
-        Arguements:
-            X(array)     : X-values for prediction. Shape=(n,44) n is number of rows
-            save(Boolean): if True save values to new_data.csv
-        Returns:
-            list of predictions of length n
-            [float, float, ...]
-        """
-        filename='new_data.csv'
-        if save:
-            with open(filename,'a') as f:
-                for row in np.array(X):
-                    csv.writer(f).writerow(row)
+    def train(self, data_file='data.csv', model_file='model.pkl'):
+        X = pd.read_csv(os.path.join(working_directory, data_file))
+        train, test = train_test_split(X, test_size=0.3)
 
-        return [pred[0] for pred in self.nn.predict_proba(X)]
+        train_Y = train['CLAIM_FLAG']
+        train_X = train.drop(['CLAIM_FLAG'], axis=1)
+        train_X = self.scaler.transform(train_X)
 
-    def save(self, filename='model.pkl'):
-        """
-        save(filename)
-        Save the model to filename
+        test_Y = test['CLAIM_FLAG']
+        test_X = test.drop(['CLAIM_FLAG'], axis=1)
+        test_X = self.scaler.transform(test_X)
 
-        Arguements:
-            filename(string): Name of file to store the model
-        Returns:
-            None
-        """
-        file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), filename)
-        pickle.dump(self.nn, open(file_path, 'wb'))
+        clf1 = SVC(gamma='auto', probability=True, class_weight='balanced')
+        clf2 = RandomForestClassifier(n_estimators=1000, random_state=42)
+        clf3 = KNeighborsClassifier(n_neighbors=10)
+        clf4 = AdaBoostClassifier()
+        new_models = [clf1, clf2, clf3, clf4]
 
-    def load(self, filename='model.pkl'):
-        """
-        load(filename)
-        Load the model from filename
+        for model in new_models:
+            model.fit(train_X, train_Y)
 
-        Arguements:
-            filename(string): Name of file to load the model
-        Returns:
-            None
-        """
-        file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), filename)
-        self.nn = pickle.load(open(file_path, 'rb'))
+        new_models.append(clf1)
+        new_models.append(clf1)
+        new_models.append(clf2)
 
-valid_csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'valid.csv')
-valid_X = pd.read_csv(valid_csv_path, index_col='ID')
-valid_Y = valid_X['CLAIM_FLAG']
-valid_X = valid_X.drop(['CLAIM_FLAG'], axis=1)
+        pickle.dump(new_models, open(os.path.join(
+            working_directory, model_file), 'wb'))
 
-model = ml_model()
+# model = ml_model()
+# model.train()
 
-#model.load()
-model.save()
 
-print(model.eval(valid_X,valid_Y))
+# Tested:
 
-X = valid_X.sample(n=5)
-print(model.predict(X,save=True))
+# data = json.load(
+#     open(os.path.join(working_directory, 'sample_data.json'), 'r'))
+# model = ml_model()
+# result = model.predict(data)
+# print(result)
