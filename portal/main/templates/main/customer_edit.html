@@ -13,6 +13,7 @@
         <div class="nav-wrapper">
             <span class="brand-logo center">Bengalathon</span>
             <ul id="nav-mobile" class="right">
+                <li><a href="/">Home</a></li>
                 <li><a class="dropdown-trigger" href="#" data-target="user-dropdown"><i class="material-icons">
                             account_circle </i></a></li>
             </ul>
@@ -168,26 +169,26 @@
             </div>
             <div class="row">
                 <div class="input-field col s12 l6">
-                    <input type="number" name="insured_value">
+                    <input type="number" name="insured_value" id="insured_value">
                     <label for="insured_value">Insured declared value</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12 l6">
-                    <input type="number" name="prev_insurance_amt">
+                    <input type="number" name="prev_insurance_amt" id="prev_insurance_amt">
                     <label for="prev_insurance_amt">Claim amount from previous insurance</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12 l6">
-                    <input type="number" name="prev_insurance_no">
+                    <input type="number" name="prev_insurance_no" id="prev_insurance_no">
                     <label for="prev_insurance_no">No. of times insurance claimed from previous company</label>
                 </div>
             </div>
             <div class="row">
                 <span>Was the previous claim revoked</span>
-                <p><label> <input type="radio" name="prev_claim_revoked" value="Yes" /> <span>Yes</span> </label></p>
-                <p><label> <input type="radio" name="prev_claim_revoked" value="No" /> <span>No</span> </label></p>
+                <p><label> <input type="radio" name="prev_claim_revoked" value="Yes" id="revoked" /> <span>Yes</span> </label></p>
+                <p><label> <input type="radio" name="prev_claim_revoked" value="No" id="not_revoked" /> <span>No</span> </label></p>
             </div>
             <div class="row">
                 <div class="col s12 l6">
@@ -206,6 +207,7 @@
         $('.dropdown-trigger').dropdown();
         let customer_data = {{customer|safe}}[0];
         let customer_fields = customer_data['fields'];
+        // console.log(customer_fields);
         let marriage_status = customer_fields['marriage_status'];
         let gender = customer_fields['gender'];
         let car = customer_fields['car_use'];
@@ -215,6 +217,10 @@
         let car_type = customer_fields['car_type'].toLowerCase();
         let car_color = customer_fields['car_color_red'];
         let pk = customer_data['pk'];
+        let prev_claim_revoked = customer_fields['prev_claim_revoked'];
+        let prev_insurance_amt = customer_fields['prev_insurance_amt'];
+        let prev_insurance_no = customer_fields['prev_insurance_no'];
+        let insured_value = customer_fields['insured_value'];
 
         $('#edit_form')[0].action = '/customer/edit/' + pk + '/';
 
@@ -227,6 +233,9 @@
         $('#home_estimate')[0].value = customer_fields['home_estimate'];
         $('#avg_travel_time')[0].value = customer_fields['avg_travel_time'];
         $('#car_age')[0].value = customer_fields['car_age'];
+        $('#insured_value')[0].value = insured_value;
+        $('#prev_insurance_amt')[0].value = prev_insurance_amt;
+        $('#prev_insurance_no')[0].value = prev_insurance_no;
 
         $('#' + marriage_status)[0].checked = true;
         $('#' + gender)[0].checked = true;
@@ -264,6 +273,18 @@
         } else {
             $('#not_red')[0].checked = true;
         }
+
+        if (prev_claim_revoked == true) {
+            $('#revoked')[0].checked = true;
+        } else {
+            $('#not_revoked')[0].checked = true;
+        }
+        
+        let labels = document.querySelectorAll('label');
+        console.log(labels);
+        labels.forEach( label => {
+            label.className += ' active';
+        });
     });
 </script>
 

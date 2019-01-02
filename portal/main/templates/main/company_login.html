@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Bengalathon</title>
-    <link rel="stylesheet" href="{% static 'main/css/materialize.min.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/materialize.min.css' %}">
     <script src="{% static 'main/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'main/js/materialize.min.js' %}"></script>
 </head>
@@ -24,12 +24,12 @@
             </div>
         </div>
 
-        <div class="login-container row" id="login">
+        <div class="login-container" id="login">
 
-            <div class="z-depth-1 grey lighten-4 row">
+            <div class="row">
 
-                <div class="col s12" id="form-title">
-                    <center> <span class="indigo-text"> Login to portal </span></center>
+                <div class="col s12 form-title">
+                    <center> <span class="form-title"> Login to portal </span></center>
                 </div>
 
                 <form class="col s12" method="post" action="{% url 'company_login' %}">
@@ -52,7 +52,7 @@
                     <div class="row">
                         <center>
                             <div class="input-field col s12 login-button">
-                                <button class="btn waves-effect waves-light indigo" type="submit" name="login">
+                                <button class="btn waves-effect waves-light white" type="submit" name="login">
                                     Login
                                 </button>
                             </div>
@@ -68,19 +68,19 @@
                     </div>
 
                     <div class="row redirect-text">
-                        <span class="indigo-text" id="register-redirect"> Create Account </span>
+                        <span class="white-text" id="register-redirect"> CREATE ACCOUNT </span>
                     </div>
                 </form>
 
             </div>
         </div>
 
-        <div class="login-container row" id="register">
+        <div class="login-container" id="register">
 
-            <div class="z-depth-1 grey lighten-4 row">
+            <div class="row">
 
-                <div class="col s12" id="form-title">
-                    <center> <span class="undigo-text"> Register to portal </span></center>
+                <div class="col s12 form-title">
+                    <center> <span class="form-title"> Register to portal </span></center>
                 </div>
 
                 <form class="col s12" method="post" action="{% url 'company_register' %}">
@@ -118,7 +118,7 @@
                     <div class="row">
                         <center>
                             <div class="input-field col s12">
-                                <button class="btn waves-effect waves-light indigo" type="submit" name="register">
+                                <button class="btn waves-effect waves-light white" type="submit" name="register">
                                     Register
                                 </button>
                             </div>
@@ -126,7 +126,7 @@
                     </div>
 
                     <div class="row redirect-text">
-                        <span class="indigo-text" id="login-redirect"> Already have an account? </span>
+                        <span class="white-text" id="login-redirect"> ALREADY HAVE AN ACCOUNT? </span>
                     </div>
                 </form>
 
