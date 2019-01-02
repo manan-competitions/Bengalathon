@@ -8,7 +8,8 @@ from django.core import serializers
 import json
 from main.forms import CustomerForm, CompanyProfileForm, UserForm
 from main.mlmodel.model import ml_model
-
+import os
+from django.utils.encoding import smart_str
 
 @login_required
 def index(request):
@@ -77,11 +78,100 @@ def add_customer(request):
         customer_form = CustomerForm(request.POST)
         company_profile = CompanyProfile.objects.get(user=request.user)
         if customer_form.is_valid():
-            print(customer_form)
             customer = customer_form.save(commit=False)
             customer.company = company_profile
-            customer.risk = risk_prediction(customer)
+
+            model = ml_model()    
+            education = 0
+            if customer.education == 'Less than High School':
+                education = 0
+            elif customer.education == 'High School':
+                education = 1
+            elif customer.education == 'Bachelors':
+                education = 2
+            elif customer.education == 'Masters':
+                education = 3
+            elif customer.education == 'PhD':
+                education = 4
+
+            car_type = 0
+            if customer.car_type == 'Mini Van':
+                car_type = 0
+            elif customer.car_type == 'Panel Truck':
+                car_type = 1
+            elif customer.car_type == 'Pickup':
+                car_type = 2
+            elif customer.car_type == 'Sports Car':
+                car_type = 3
+            elif customer.car_type == 'Van':
+                car_type = 4
+            elif customer.car_type == 'SUV':
+                car_type = 5
+
+            occupation = 0
+            if customer.occupation == 'Clerical':
+                occupation = 0
+            elif customer.occupation == 'Doctor':
+                occupation = 1
+            elif customer.occupation == 'Home':
+                occupation = 2
+            elif customer.occupation == 'Lawyer':
+                occupation = 3
+            elif customer.occupation == 'Manager':
+                occupation = 4
+            elif customer.occupation == 'Professional':
+                occupation = 5
+            elif customer.occupation == 'Student':
+                occupation = 6
+            elif customer.occupation == 'Blue Collar':
+                occupation = 7
+
+            X = {}
+            X['KIDSDRIV'] = customer.no_children_drive
+            X['AGE'] = customer.age
+            X['HOMEKIDS'] = customer.no_children
+            X['INCOME'] = customer.income
+            if customer.parents_alive == True:
+                X['PARENT1'] = 1
+            else:
+                X['PARENT1'] = 0
+            X['HOME_VAL'] = customer.home_estimate
+            if customer.marriage_status == True:
+                X['MSTATUS'] = 1
+            else:
+                X['MSTATUS'] = 0
+
+            if customer.gender == True:
+                X['GENDER'] = 1
+            else:
+                X['GENDER'] = 0
+            X['TRAVTIME'] = customer.avg_travel_time
+            if customer.car_use == True:
+                X['CAR_USE'] = 1
+            else:
+                X['CAR_USE'] = 0
+            X['BLUE_BOOK'] =  customer.insured_value
+            if customer.car_color_red == True:
+                X['RED_CAR'] = 1
+            else:
+                X['RED_CAR'] = 0
+            X['OLD_CLAIM'] = customer.prev_insurance_amt
+            X['CLM_FREQ'] = customer.prev_insurance_no
+            if customer.prev_claim_revoked==True:
+                X['REVOKED'] = 1
+            else:
+                X['REVOKED'] = 0
+            X['CAR_AGE'] = customer.car_age
+            if customer.urbanicity == True:
+                X['URBAN_CITY'] = 1
+            else:
+                X['URBAN_CITY'] = 0
+            X['EDUCATION'] = education
+            X['CAR_TYPE'] = car_type
+            X['OCCUPATION'] = occupation
+            customer.risk = model.predict(X)
             customer.save()
+
             return HttpResponseRedirect(reverse('index'))
         else:
             # print(customer_form.errors)
@@ -114,76 +204,3 @@ def edit_customer(request, pk=None):
             return JsonResponse({'form_errors': serialized_errors})
     return render(request, 'main/customer_edit.html', {'status': status,
                                                        'customer': serialized_customer})
-
-
-def risk_prediction(customer):
-    model = ml_model()
-    education = 0
-    if customer.education == 'Less than High School':
-        education = 0
-    elif customer.education == 'High School':
-        education = 1
-    elif customer.education == 'Bachelors':
-        education = 2
-    elif customer.education == 'Masters':
-        education = 3
-    elif customer.education == 'PhD':
-        education = 4
-
-    car_type = 0
-    if customer.car_type == 'Mini Van':
-        car_type = 0
-    elif customer.car_type == 'Panel Truck':
-        car_type = 1
-    elif customer.car_type == 'Pickup':
-        car_type = 2
-    elif customer.car_type == 'Sports Car':
-        car_type = 3
-    elif customer.car_type == 'Van':
-        car_type = 4
-    elif customer.car_type == 'SUV':
-        car_type = 5
-
-    occupation = 0
-    if customer.occupation == 'Clerical':
-        occupation = 0
-    elif customer.occupation == 'Doctor':
-        occupation = 1
-    elif customer.occupation == 'Home':
-        occupation = 2
-    elif customer.occupation == 'Lawyer':
-        occupation = 3
-    elif customer.occupation == 'Manager':
-        occupation = 4
-    elif customer.occupation == 'Professional':
-        occupation = 5
-    elif customer.occupation == 'Student':
-        occupation = 6
-    elif customer.occupation == 'Blue Collar':
-        occupation = 7
-
-    X = {}
-    X['KIDSDRIV'] = customer.no_children_drive
-    X['AGE'] = customer.age
-    X['HOMEKIDS'] = customer.no_kids
-    X['INCOME'] = customer.income
-    X['PARENT1'] = customer.parents_alive
-    X['HOME_VAL'] = customer.home_estimate
-    X['MSTATUS'] = customer.marriage_status
-    X['GENDER'] = customer.gender
-    X['TRAVTIME'] = customer.avg_travel_time
-    X['CAR_USE'] = customer.car_use
-    X['BLUE_BOOK'] =  customer.insured_value
-    X['RED_CAR'] = customer.car_color_red
-    X['OLD_CLAIM'] = customer.prev_insurance_amt
-    X['CLM_FREQ'] = customer.prev_insurance_no
-    X['REVOKED'] = customer.prev_claim_revoked
-    X['CAR_AGE'] = customer.car_age
-    X['URBAN_CITY'] = customer.urbanicity
-    X['EDUCATION'] = education
-    X['CAR_TYPE'] = car_type
-    X['OCCUPATION'] = occupation
-
-    risk = model.predict(X)
-
-    return risk

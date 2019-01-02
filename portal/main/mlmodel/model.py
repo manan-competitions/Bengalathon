@@ -99,6 +99,7 @@ class ml_model(object):
         'CAR_USE', 'BLUE_BOOK', 'RED_CAR', 'OLD_CLAIM', 'CLM_FREQ', 'REVOKED', 'CAR_AGE', 'URBAN_CITY',
         'CAR_TYPE', 'OCCUPATION', 'EDUCATION' ]
         """
+        print(X)
         X_new = self.pre_process(X)
         self.save_data(X_new, os.path.join(working_directory, 'new_data.csv'))
         X_new = self.scaler.transform(X_new)
@@ -112,11 +113,11 @@ class ml_model(object):
         vals = sorted(vals)
         if Y_pred <= 2.5:
             avg = (vals[0]+vals[1]+vals[2])/3
-        if 4 < Y_pred:
+        elif 4 < Y_pred:
             avg = (vals[-1]+vals[-2]+vals[-3])/3
         else:
             avg = -1
-        return avg
+        return round(avg, 2)
 
     def save_data(self, data, filename='data.csv'):
         data = data.reshape(32,)

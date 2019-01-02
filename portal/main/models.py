@@ -41,9 +41,9 @@ class Customer(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(100)], default=1)
     no_children = models.IntegerField(choices=NO_CHILDREN_CHOICE)
     no_children_drive = models.IntegerField(choices=NO_CHILDREN_CHOICE)
-    income = models.BigIntegerField(default=0)
+    income = models.FloatField(default=0)
     parents_alive = models.BooleanField(default=False)
-    home_estimate = models.BigIntegerField(default=0)
+    home_estimate = models.FloatField(default=0)
     marriage_status = models.BooleanField(default=False)
     gender = models.BooleanField(default=False)
     education = models.CharField(choices=EDUCATION_CHOICE, max_length=100)
@@ -54,11 +54,11 @@ class Customer(models.Model):
     car_color_red = models.BooleanField(default=False)
     car_age = models.IntegerField(default=0)
     urbanicity = models.BooleanField(default=False)
-    insured_value = models.BigIntegerField(default=0)
-    prev_insurance_amt = models.BigIntegerField(default=0)
+    insured_value = models.FloatField(default=0)
+    prev_insurance_amt = models.FloatField(default=0)
     prev_insurance_no = models.IntegerField(default=0)
     prev_claim_revoked = models.BooleanField(default=False)
-    risk = models.FloatField(default=0.0, validators=[MaxValueValidator(1.0)])
+    risk = models.FloatField(default=0.0)
 
     def __str__(self):
         return self.name

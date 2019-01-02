@@ -2,3 +2,4 @@
 .vscode
 env
 db.sqlite3
+model.pkl
