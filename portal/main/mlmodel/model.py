@@ -11,10 +11,13 @@ import json
 import csv
 import os
 
+
+working_directory = os.path.dirname((os.path.abspath(__file__)))
+
 class ml_model(object):
     def __init__(self):
         try:
-            self.models = pickle.load(open('model.pkl','rb'))
+            self.models = pickle.load(open(os.path.join(working_directory, 'model.pkl'),'rb'))
         except:
             clf1 = SVC(gamma='auto',probability=True,class_weight='balanced')
             clf2 = RandomForestClassifier(n_estimators=1000, random_state=42)
@@ -22,7 +25,7 @@ class ml_model(object):
             clf4 = AdaBoostClassifier()
             self.models = [clf1,clf2,clf3,clf4]
 
-        self.scaler = pickle.load(open('scaler.pkl','rb'))
+        self.scaler = pickle.load(open(os.path.join(working_directory,'scaler.pkl'),'rb'))
 
     def pre_process(self, X):
         """
@@ -94,7 +97,7 @@ class ml_model(object):
         'CAR_TYPE', 'OCCUPATION', 'EDUCATION' ]
         """
         X_new = self.pre_process(X)
-        self.save_data(X_new,'new_data.csv')
+        self.save_data(X_new, os.path.join(working_directory,'new_data.csv'))
         X_new = self.scaler.transform(X_new)
         Y_pred = np.zeros((np.shape(X_new)[0]))
 
@@ -110,11 +113,11 @@ class ml_model(object):
 
     def save_data(self,data,filename='data.csv'):
         data = data.reshape(32,)
-        with open(filename,'a') as f:
+        with open(os.path.join(working_directory,filename),'a') as f:
             csv.writer(f).writerow(data)
 
     def train(self,data_file='data.csv',model_file='model.pkl'):
-        X = pd.read_csv(data_file)
+        X = pd.read_csv(os.path.join(working_directory,data_file))
         train,test = train_test_split(X,test_size=0.3)
 
         train_Y = train['CLAIM_FLAG']
@@ -138,16 +141,16 @@ class ml_model(object):
         new_models.append(clf1)
         new_models.append(clf2)
 
-        pickle.dump(new_models,open(model_file,'wb'))
+        pickle.dump(new_models,open(os.path.join(working_directory,model_file),'wb'))
 
-model = ml_model()
-model.train()
+#model = ml_model()
+#model.train()
 
-"""
+
 # Tested:
 
-data = json.load(open('sample_data.json','r'))
+data = json.load(open(os.path.join(working_directory, 'sample_data.json'),'r'))
+print(data)
 model = ml_model()
 result = model.predict(data)
 print(result)
-"""
