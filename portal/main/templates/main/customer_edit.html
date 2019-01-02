@@ -11,9 +11,11 @@
 <body>
     <nav>
         <div class="nav-wrapper">
-            <span class="brand-logo center">Bengalathon</span>
+            <div class="title-container">
+                <span class="brand-logo center txt anim-text-flow">BENGALATHON</span>
+            </div>
             <ul id="nav-mobile" class="right">
-                <li><a href="/">Home</a></li>
+                <li><a href="/" id="home-link-lg">Home</a></li>
                 <li><a class="dropdown-trigger" href="#" data-target="user-dropdown"><i class="material-icons">
                             account_circle </i></a></li>
             </ul>
@@ -281,18 +283,22 @@
         }
         
         let labels = document.querySelectorAll('label');
-        console.log(labels);
         labels.forEach( label => {
             label.className += ' active';
         });
 
         function checkEditForm(form) {
-        if(form.no_children_drive.value > form.no_children) {
-            alert('No of children driving is more than total no of children');
-            return false;
+            if(form.no_children_drive.value > form.no_children) {
+                alert('No of children driving is more than total no of children');
+                return false;
+            }
+            return true;
         }
-        return true;
-    }
+
+        $('.txt').html(function(i, html) {
+            var chars = $.trim(html).split("");
+            return '<span>' + chars.join('</span><span>') + '</span>';
+        });
     });
 </script>
 
