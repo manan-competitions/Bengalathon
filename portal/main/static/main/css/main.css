@@ -50,6 +50,10 @@ canvas {
     display: none;
 }
 
+.customer {
+    font-size: 1.15em;
+}
+
 .cust-details {
     background: #f5f2ed;
     padding: 3px 5px;
