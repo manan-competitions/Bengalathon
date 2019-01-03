@@ -161,8 +161,8 @@ class ml_model(object):
         pickle.dump(new_models, open(os.path.join(
             working_directory, model_file), 'wb'))
 
-model = ml_model()
-model.train()
+# model = ml_model()
+# model.train()
 
 
 # Tested:

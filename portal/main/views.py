@@ -175,13 +175,15 @@ def add_customer(request):
             X['CAR_TYPE'] = car_type
             X['OCCUPATION'] = occupation
             customer.risk = model.predict(X)
+            customer.save()
 
             if request.POST.get('add'):
-                customer.save()
                 return HttpResponseRedirect(reverse('index'))
 
             elif request.POST.get('calculate'):
-                return render(request, 'main/final.html', {'risk': model.predict(X)})
+                return render(request, 'main/final.html', { 'id': customer.id,
+                                                            'risk': model.predict(X)})
+            
         else:
             # print(customer_form.errors)
             errors_json = customer_form.errors.as_json()
