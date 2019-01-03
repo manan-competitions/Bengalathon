@@ -63,6 +63,11 @@ canvas {
     background: #e3e3e3 !important;
 }
 
+.display-chart {
+    margin-top: 1vh !important;
+    margin-bottom: 5vh !important;
+}
+
 @media all and (max-width: 1000px) {
     .card p {
         display: none;
