@@ -24,7 +24,9 @@ def company_register(request):
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         company_profile_form = CompanyProfileForm(data=request.POST)
-
+        if user_form.cleaned_data.get('email') in [user.email for user in User.objects.all()]:
+            return render(request, 'main/company_register.html', {'user_form_errors': 'Account with same email exists',
+                                                                   'company_profile_form_errors': company_profile_form.errors})
         if user_form.is_valid() and company_profile_form.is_valid():
             user = user_form.save(commit=False)
             user.set_password(user.password)
