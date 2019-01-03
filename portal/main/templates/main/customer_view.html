@@ -58,6 +58,10 @@
         <div class="col s12 l4"><span>Is car red:</span> <span id="car_color"></span></div>
         <div class="col s12 l4"><span>Age of car:</span> <span id="car_age"></span></div>
         <div class="col s12 l4"><span>Urbanicity:</span> <span id="urbanicity"></span></div>
+        <div class="col s12 l8"><span>Declared Inusrance Value:</span> <span id="declared_value"></span></div>
+        <div class="col s12 l6"><span>Claim from previous insurance: </span><span id="prev_insurance_amt"></span></div>
+        <div class="col s12 l6"><span>Number of times insured from previous company:</span><span id="prev_insurance_no"></span></div>
+        <div class="col s12 l4"><span>Was the previous claim revoked:</span><span id="prev_claim_revoked"></span></div>
     </div>
     <script src="{% static 'main/js/particles.js' %}"></script>
     <script src="{% static 'main/js/app.js' %}"></script>
@@ -77,15 +81,20 @@
         $('#no_children_drive')[0].innerHTML = customer_data['no_children_drive'];
         $('#income')[0].innerHTML = "&#8377;" + customer_data['income'];
         $('#house_value')[0].innerHTML = "&#8377;" + customer_data['home_estimate'];
-        $('#marital_status')[0].innerHTML = customer_data['marriage_status'];
+        // $('#marital_status')[0].innerHTML = customer_data['marriage_status'];
         $('#education')[0].innerHTML = customer_data['education'];
         $('#occupation')[0].innerHTML = customer_data['occupation'];
         $('#travel_time')[0].innerHTML = customer_data['avg_travel_time'] + " mins";
-        $('#urbanicity')[0].innerHTML = customer_data['urbanicity'];
-        $('#gender')[0].innerHTML = customer_data['gender'];
-        $('#use_of_car')[0].innerHTML = customer_data['car_use'];
+        // $('#urbanicity')[0].innerHTML = customer_data['urbanicity'];
+        // $('#gender')[0].innerHTML = customer_data['gender'];
+        // $('#use_of_car')[0].innerHTML = customer_data['car_use'];
         $('#car_type')[0].innerHTML = customer_data['car_type'];
         $('#car_age')[0].innerHTML = customer_data['car_age'] + " yrs";
+        $('#prev_insurance_amt')[0].innerHTML = ' &#8377;' + customer_data['prev_insurance_amt'];
+        $('#prev_insurance_no')[0].innerHTML = ' ' + customer_data['prev_insurance_no'];
+        $('#declared_value')[0].innerHTML = ' &#8377;' + customer_data['insured_value'];
+        $("#prev_claim_revoked")[0].innerHTML = ' ' + customer_data['prev_claim_revoked'];
+
         if(customer_data['parents_alive']) {
             $('#parents_alive')[0].innerHTML = "Yes";
         }
@@ -103,6 +112,34 @@
             var chars = $.trim(html).split("");
             return '<span>' + chars.join('</span><span>') + '</span>';
         });
+        
+        if( customer_data['marriage_status'] == 'Yes') {
+            $('#marital_status')[0].innerHTML = 'Married';
+        }
+        else if( customer_data['marriage_status'] == 'No') {
+            $('#marital_status')[0].innerHTML = 'Unmarried';
+        }
+
+        if( customer_data['gender'] == 'Yes') {
+            $('#gender')[0].innerHTML = 'Male';
+        }
+        else if( customer_data['gender'] == 'No') {
+            $('#gender')[0].innerHTML = 'Female';
+        }
+
+        if( customer_data['car_use'] == 'Yes') {
+            $('#use_of_car')[0].innerHTML = 'Commercial';
+        }
+        else if( customer_data['car_use'] == 'No') {
+            $('#use_of_car')[0].innerHTML = 'Private';
+        }
+
+        if( customer_data['urbanicity'] == 'Yes') {
+            $('#urbanicity')[0].innerHTML = 'Urban';
+        }
+        else if( customer_data['marriage_status'] == 'No') {
+            $('#urbanicity')[0].innerHTML = 'Rural';
+        }
     });
 </script>
 

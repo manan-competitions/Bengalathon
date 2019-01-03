@@ -208,7 +208,7 @@
         $('.dropdown-trigger').dropdown();
         let customer_data = {{customer|safe}}[0];
         let customer_fields = customer_data['fields'];
-        // console.log(customer_fields);
+        console.log(customer_fields);
         let marriage_status = customer_fields['marriage_status'];
         let gender = customer_fields['gender'];
         let car = customer_fields['car_use'];
@@ -239,28 +239,28 @@
         $('#prev_insurance_no')[0].value = prev_insurance_no;
 
         if(marriage_status == 'Yes') {
-            $('#Married').checked = true;
+            $('#Married')[0].checked = 'true';
         }
         else {
-            $('#Unmarried').checked = true;
+            $('#Unmarried')[0].checked = 'true';
         }
         if(gender == 'Yes') {
-            $('#Male').checked = true;
+            $('#Male')[0].checked = 'true';
         }
         else {
-            $('#Female').checked = true;
+            $('#Female')[0].checked = 'true';
         }
         if(car == 'Yes') {
-            $('#Commercial').checked = true;
+            $('#Commercial')[0].checked = 'true';
         }
         else {
-            $('#Private').checked = true;
+            $('#Private')[0].checked = 'true';
         }
         if(urbanicity == 'Yes') {
-            $('#Urban').checked = true;
+            $('#Urban')[0].checked = 'true';
         }
         else {
-            $('#Rural').checked = true;
+            $('#Rural')[0].checked = 'true';
         }
         
         if (customer_fields['parents_alive']) {
