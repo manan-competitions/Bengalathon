@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from main.models import CompanyProfile, Customer
+from main.models import CompanyProfile, Customer,User
 from django.shortcuts import reverse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -24,7 +24,7 @@ def company_register(request):
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         company_profile_form = CompanyProfileForm(data=request.POST)
-        if user_form.cleaned_data.get('email') in [user.email for user in User.objects.all()]:
+        if user_form.is_valid() and user_form.cleaned_data['email'] in [user.email for user in User.objects.all()]:
             return render(request, 'main/company_register.html', {'user_form_errors': 'Account with same email exists',
                                                                    'company_profile_form_errors': company_profile_form.errors})
         if user_form.is_valid() and company_profile_form.is_valid():
@@ -86,7 +86,7 @@ def add_customer(request):
             customer = customer_form.save(commit=False)
             customer.company = company_profile
 
-            model = ml_model()    
+            model = ml_model()
             education = 0
             if customer.education == 'Less than High School':
                 education = 0
@@ -183,7 +183,7 @@ def add_customer(request):
             elif request.POST.get('calculate'):
                 return render(request, 'main/final.html', { 'id': customer.id,
                                                             'risk': model.predict(X)})
-            
+
         else:
             # print(customer_form.errors)
             errors_json = customer_form.errors.as_json()
@@ -211,7 +211,7 @@ def edit_customer(request, pk=None):
         customer_edit_form = CustomerForm(request.POST, instance=customer)
         if customer_edit_form.is_valid():
             customer = customer_edit_form.save(commit=False)
-            model = ml_model()    
+            model = ml_model()
             education = 0
             if customer.education == 'Less than High School':
                 education = 0
@@ -307,7 +307,7 @@ def edit_customer(request, pk=None):
                 'json', [customer_edit_form.errors])
             return JsonResponse({'form_errors': serialized_errors})
 
-@login_required    
+@login_required
 def delete_customer(request, pk):
     customer = Customer.objects.get(pk=pk)
     customer.delete()
