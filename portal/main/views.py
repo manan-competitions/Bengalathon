@@ -174,7 +174,8 @@ def add_customer(request):
             X['EDUCATION'] = education
             X['CAR_TYPE'] = car_type
             X['OCCUPATION'] = occupation
-            customer.risk = model.predict(X)
+            risk = model.predict(X)
+            customer.risk = risk
             customer.save()
 
             if request.POST.get('add'):
@@ -182,7 +183,7 @@ def add_customer(request):
 
             elif request.POST.get('calculate'):
                 return render(request, 'main/final.html', { 'id': customer.id,
-                                                            'risk': model.predict(X)})
+                                                            'risk': risk})
 
         else:
             # print(customer_form.errors)

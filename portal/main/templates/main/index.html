@@ -306,6 +306,7 @@
     let customer_data = {{customers|safe}};
     customer_data.forEach(customer => {
         customer_fields = customer['fields'];
+        // console.log(customer_fields);
         let id = customer['pk'];
         view_table = document.getElementById('cust-view');
         let risk = customer_fields['risk'];
@@ -315,21 +316,19 @@
         else {
             risk = (100-risk*100) + '%';
         }
-        view_table.innerHTML += '<tr class="customer" id="cust' + customer['pk'] + '"><td>' + id + '</td><td><a href="/customer/view/' + id + '">' + customer_fields['name'] + '</a></td><td>' + customer_fields['age'] + '</td><td>' + risk + '</td><td><a href="/customer/delete/' + id + '"><i class="material-icons">delete</i></a>' +'</td></tr>';
+        view_table.innerHTML += '<tr class="customer" id="cust' + customer['pk'] + '"><td class="customer-id">' + id + '</td><td><a href="/customer/view/' + id + '">' + customer_fields['name'] + '</a></td><td>' + customer_fields['age'] + '</td><td>' + risk + '</td><td><a href="/customer/delete/' + id + '"><i class="material-icons">delete</i></a>' +'</td></tr>';
     });
 
     function checkEditForm(form) {
         let id = form.customer_id.value;
-        let users = document.getElementsByClassName('customer').length;
-        if( id.toString() == '') {
-            alert('Enter a valid id');
-            return false;
+        let customers = document.getElementsByClassName('customer-id');
+        for( let i = 0; i<customers.length; i++) {
+            if( customers[i].innerHTML == id ) {
+                return true;
+            }
         }
-        if(id > users) {
-            alert('Enter a valid id');
-            return false;
-        }
-        return true;
+        alert('Enter a valid id');
+        return false;
     }
 
     function checkAddForm(form) {
