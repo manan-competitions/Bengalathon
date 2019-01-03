@@ -7,26 +7,35 @@
         margin-top: 20px;
         background: #f3f3f3;
     }
+
     #details div {
         border: 0.5px solid black;
     }
+
     #details div span:nth-child(1) {
         font-size: 18px;
     }
+
     #details div span:nth-child(2) {
         font-size: 22px;
-        color: red;
+        color: #1F45FC;
     }
 </style>
 
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+</head>
 <body>
     <nav>
         <div class="nav-wrapper">
-            <div class="title-container">    
+            <div class="title-container">
                 <span class="brand-logo center txt anim-text-flow">BENGALATHON</span>
             </div>
             <ul id="nav-mobile" class="right">
-                    <li><a href="/" id="home-link-lg">Home</a></li>
+                <li><a href="/" id="home-link-lg">Home</a></li>
                 <li><a class="dropdown-trigger" href="#" data-target="user-dropdown"><i class="material-icons">
                             account_circle </i></a></li>
             </ul>
@@ -39,30 +48,39 @@
         <li><a href="{% url 'index' %}" class="active">Home</a></li>
         <li><a href="{% url 'company_logout' %}">Logout</a></li>
     </ul>
+
+
+    <div class="display-chart container">
+        <div class="hide" id="error-msg">
+            <h4>Customer manually added</h4>
+        </div>
+        <div id="chart-container" class="hide" style="height: 400px"></div>
+    </div>
     <div class="container row" id="details">
         <div class="col s12"><span>Name:</span> <span id="name"></span></div>
-        <div class="col s12 l6"><span>Birthdate (yyyy/mm/dd):</span> <span id="dob"></span></div>
-        <div class="col s12 l6"><span>Age:</span> <span id="age"></span></div>
-        <div class="col s12 l6"><span>Number of children:</span> <span id="no_children"></span></div>
-        <div class="col s12 l6"><span>Children that drive:</span> <span id="no_children_drive"></span></div>
-        <div class="col s12 l4"><span>Income:</span> <span id="income"></span></div>
-        <div class="col s12 l4"><span>Are parents alive?:</span> <span id="parents_alive"></span></div>
-        <div class="col s12 l4"><span>House value:</span> <span id="house_value"></span></div>
-        <div class="col s12 l4"><span>Marital Status:</span> <span id="marital_status"></span></div>
-        <div class="col s12 l4"><span>Gender:</span> <span id="gender"></span></div>
-        <div class="col s12 l4"><span>Education:</span> <span id="education"></span></div>
-        <div class="col s12 l4"><span>Occupation:</span> <span id="occupation"></span></div>
-        <div class="col s12 l4"><span>Travel time:</span> <span id="travel_time"></span></div>
-        <div class="col s12 l4"><span>Use of car:</span> <span id="use_of_car"></span></div>
-        <div class="col s12 l4"><span>Car type:</span> <span id="car_type"></span></div>
-        <div class="col s12 l4"><span>Is car red:</span> <span id="car_color"></span></div>
-        <div class="col s12 l4"><span>Age of car:</span> <span id="car_age"></span></div>
-        <div class="col s12 l4"><span>Urbanicity:</span> <span id="urbanicity"></span></div>
-        <div class="col s12 l8"><span>Declared Inusrance Value:</span> <span id="declared_value"></span></div>
-        <div class="col s12 l6"><span>Claim from previous insurance: </span><span id="prev_insurance_amt"></span></div>
-        <div class="col s12 l6"><span>Number of times insured from previous company:</span><span id="prev_insurance_no"></span></div>
-        <div class="col s12 l4"><span>Was the previous claim revoked:</span><span id="prev_claim_revoked"></span></div>
+        <div class="col s12 l12"><span>Birthdate (yyyy/mm/dd):</span> <span id="dob"></span></div>
+        <div class="col s12 l12"><span>Age:</span> <span id="age"></span></div>
+        <div class="col s12 l12"><span>Number of children:</span> <span id="no_children"></span></div>
+        <div class="col s12 l12"><span>Children that drive:</span> <span id="no_children_drive"></span></div>
+        <div class="col s12 l12"><span>Income:</span> <span id="income"></span></div>
+        <div class="col s12 l12"><span>Are parents alive?:</span> <span id="parents_alive"></span></div>
+        <div class="col s12 l12"><span>House value:</span> <span id="house_value"></span></div>
+        <div class="col s12 l12"><span>Marital Status:</span> <span id="marital_status"></span></div>
+        <div class="col s12 l12"><span>Gender:</span> <span id="gender"></span></div>
+        <div class="col s12 l12"><span>Education:</span> <span id="education"></span></div>
+        <div class="col s12 l12"><span>Occupation:</span> <span id="occupation"></span></div>
+        <div class="col s12 l12"><span>Travel time:</span> <span id="travel_time"></span></div>
+        <div class="col s12 l12"><span>Use of car:</span> <span id="use_of_car"></span></div>
+        <div class="col s12 l12"><span>Car type:</span> <span id="car_type"></span></div>
+        <div class="col s12 l12"><span>Is car red:</span> <span id="car_color"></span></div>
+        <div class="col s12 l12"><span>Age of car:</span> <span id="car_age"></span></div>
+        <div class="col s12 l12"><span>Urbanicity:</span> <span id="urbanicity"></span></div>
+        <div class="col s12 l12"><span>Declared Inusrance Value:</span> <span id="declared_value"></span></div>
+        <div class="col s12 l12"><span>Claim from previous insurance: </span><span id="prev_insurance_amt"></span></div>
+        <div class="col s12 l12"><span>Number of times insured from previous company:</span><span id="prev_insurance_no"></span></div>
+        <div class="col s12 l12"><span>Was the previous claim revoked:</span><span id="prev_claim_revoked"></span></div>
     </div>
+
     <script src="{% static 'main/js/particles.js' %}"></script>
     <script src="{% static 'main/js/app.js' %}"></script>
 </body>
@@ -95,50 +113,90 @@
         $('#declared_value')[0].innerHTML = ' &#8377;' + customer_data['insured_value'];
         $("#prev_claim_revoked")[0].innerHTML = ' ' + customer_data['prev_claim_revoked'];
 
-        if(customer_data['parents_alive']) {
+        if (customer_data['parents_alive']) {
             $('#parents_alive')[0].innerHTML = "Yes";
-        }
-        else if(!customer_data['parents_alive']) {
+        } else if (!customer_data['parents_alive']) {
             $('#parents_alive')[0].innerHTML = "No";
         }
-        if(customer_data['car_color_red']) {
+        if (customer_data['car_color_red']) {
             $('#car_color')[0].innerHTML = "Yes";
-        }
-        else if(!customer_data['car_color_red']) {
+        } else if (!customer_data['car_color_red']) {
             $('#car_color')[0].innerHTML = "No";
         }
 
-        $('.txt').html(function(i, html) {
+        $('.txt').html(function (i, html) {
             var chars = $.trim(html).split("");
             return '<span>' + chars.join('</span><span>') + '</span>';
         });
-        
-        if( customer_data['marriage_status'] == 'Yes') {
+
+        if (customer_data['marriage_status'] == 'Yes') {
             $('#marital_status')[0].innerHTML = 'Married';
-        }
-        else if( customer_data['marriage_status'] == 'No') {
+        } else if (customer_data['marriage_status'] == 'No') {
             $('#marital_status')[0].innerHTML = 'Unmarried';
         }
 
-        if( customer_data['gender'] == 'Yes') {
+        if (customer_data['gender'] == 'Yes') {
             $('#gender')[0].innerHTML = 'Male';
-        }
-        else if( customer_data['gender'] == 'No') {
+        } else if (customer_data['gender'] == 'No') {
             $('#gender')[0].innerHTML = 'Female';
         }
 
-        if( customer_data['car_use'] == 'Yes') {
+        if (customer_data['car_use'] == 'Yes') {
             $('#use_of_car')[0].innerHTML = 'Commercial';
-        }
-        else if( customer_data['car_use'] == 'No') {
+        } else if (customer_data['car_use'] == 'No') {
             $('#use_of_car')[0].innerHTML = 'Private';
         }
 
-        if( customer_data['urbanicity'] == 'Yes') {
+        if (customer_data['urbanicity'] == 'Yes') {
             $('#urbanicity')[0].innerHTML = 'Urban';
-        }
-        else if( customer_data['marriage_status'] == 'No') {
+        } else if (customer_data['marriage_status'] == 'No') {
             $('#urbanicity')[0].innerHTML = 'Rural';
+        }
+
+        let risk = customer_data['risk'];
+        cust_risk = risk*100;
+        cust_no_risk = 100 - risk*100;
+
+        Highcharts.chart('chart-container', {
+            chart: {
+                type: 'pie',
+                options3d: {
+                    enabled: true,
+                    alpha: 45,
+                    beta: 0
+                }
+            },
+            title: {
+                text: 'Customer Credibility'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    depth: 35,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}'
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Browser share',
+                data: [
+                    ['Risk', cust_risk],
+                    ['Safe', cust_no_risk]
+                ]
+            }]
+        });
+
+        if (risk == -1) {
+            $('#error-msg').removeClass('hide');
+        } else {
+            $('#chart-container').removeClass('hide');
         }
     });
 </script>

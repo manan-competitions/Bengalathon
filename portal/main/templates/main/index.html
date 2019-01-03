@@ -93,7 +93,7 @@
                 <div class="row">
                     <div class="input-field col s12 l6">
                         <span>Birthdate</span>
-                        <input type="date" name="dob" required>
+                        <input type="date" name="dob" id="dob" required>
                     </div>
                 </div>
                 <div class="row">
@@ -272,7 +272,7 @@
                 </tr>
             </table>
         </div>
-
+        
     </div>
     <script src="{% static 'main/js/particles.js' %}"></script>
     <script src="{% static 'main/js/app.js' %}"></script>
@@ -334,6 +334,17 @@
     function checkAddForm(form) {
         if(form.no_children_drive.value > form.no_children) {
             alert('No of children driving is more than total no of children');
+            return false;
+        }
+        var today = new Date();
+        var birthDate = new Date(form.dob.value);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        if( age != form.age.value) {
+            alert('Enter correct age');
             return false;
         }
         return true;
