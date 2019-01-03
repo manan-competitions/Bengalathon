@@ -308,7 +308,14 @@
         customer_fields = customer['fields'];
         let id = customer['pk'];
         view_table = document.getElementById('cust-view');
-        view_table.innerHTML += '<tr class="customer" id="cust' + customer['pk'] + '"><td>' + id + '</td><td><a href="/customer/view/' + id + '">' + customer_fields['name'] + '</a></td><td>' + customer_fields['age'] + '</td><td>' + customer_fields['risk']*100 + '%</td><td><a href="/customer/delete/' + id + '"><i class="material-icons">delete</i></a>' +'</td></tr>';
+        let risk = customer_fields['risk'];
+        if( risk == -1) {
+            risk = 'Manual';
+        }
+        else {
+            risk = risk*100 + '%';
+        }
+        view_table.innerHTML += '<tr class="customer" id="cust' + customer['pk'] + '"><td>' + id + '</td><td><a href="/customer/view/' + id + '">' + customer_fields['name'] + '</a></td><td>' + customer_fields['age'] + '</td><td>' + risk + '</td><td><a href="/customer/delete/' + id + '"><i class="material-icons">delete</i></a>' +'</td></tr>';
     });
 
     function checkEditForm(form) {

@@ -50,11 +50,9 @@
         </a>
         <form class="col s12" method="POST" action="{% url 'delete_customer' id %}">
             {% csrf_token %}
-            <div class="row">
-                <div class="col s12 l6">
-                    <button class="btn waves-effect waves-light red" type="submit" value="add" name="add">Discard
-                    </button>
-                </div>
+            <div class="input-field">
+                <button class="btn waves-effect waves-light red" type="submit" value="add" name="add">Discard
+                </button>
             </div>
         </form>
     </div>
