@@ -118,9 +118,10 @@
         } else if (!customer_data['parents_alive']) {
             $('#parents_alive')[0].innerHTML = "No";
         }
-        if (customer_data['car_color_red']) {
+        if (customer_data['car_color_red'] == 'Yes') {
             $('#car_color')[0].innerHTML = "Yes";
-        } else if (!customer_data['car_color_red']) {
+        }
+        else if (customer_data['car_color_red'] == 'No') {
             $('#car_color')[0].innerHTML = "No";
         }
 
