@@ -135,12 +135,12 @@ def add_customer(request):
             X['KIDSDRIV'] = customer.no_children_drive
             X['AGE'] = customer.age
             X['HOMEKIDS'] = customer.no_children
-            X['INCOME'] = customer.income
+            X['INCOME'] = customer.income//(17.2)
             if customer.parents_alive == 'Yes':
                 X['PARENT1'] = 1
             else:
                 X['PARENT1'] = 0
-            X['HOME_VAL'] = customer.home_estimate
+            X['HOME_VAL'] = customer.home_estimate//(17.2)
             if customer.marriage_status == 'Yes':
                 X['MSTATUS'] = 1
             else:
@@ -155,12 +155,12 @@ def add_customer(request):
                 X['CAR_USE'] = 1
             else:
                 X['CAR_USE'] = 0
-            X['BLUE_BOOK'] =  customer.insured_value
+            X['BLUE_BOOK'] =  customer.insured_value//(17.2)
             if customer.car_color_red == 'Yes':
                 X['RED_CAR'] = 1
             else:
                 X['RED_CAR'] = 0
-            X['OLD_CLAIM'] = customer.prev_insurance_amt
+            X['OLD_CLAIM'] = customer.prev_insurance_amt//(17.2)
             X['CLM_FREQ'] = customer.prev_insurance_no
             if customer.prev_claim_revoked=='Yes':
                 X['REVOKED'] = 1
@@ -261,12 +261,12 @@ def edit_customer(request, pk=None):
             X['KIDSDRIV'] = customer.no_children_drive
             X['AGE'] = customer.age
             X['HOMEKIDS'] = customer.no_children
-            X['INCOME'] = customer.income
+            X['INCOME'] = customer.income//(17.2)
             if customer.parents_alive == 'Yes':
                 X['PARENT1'] = 1
             else:
                 X['PARENT1'] = 0
-            X['HOME_VAL'] = customer.home_estimate
+            X['HOME_VAL'] = customer.home_estimate//(17.2)
             if customer.marriage_status == 'Yes':
                 X['MSTATUS'] = 1
             else:
@@ -281,12 +281,12 @@ def edit_customer(request, pk=None):
                 X['CAR_USE'] = 1
             else:
                 X['CAR_USE'] = 0
-            X['BLUE_BOOK'] =  customer.insured_value
+            X['BLUE_BOOK'] =  customer.insured_value//(17.2)
             if customer.car_color_red == 'Yes':
                 X['RED_CAR'] = 1
             else:
                 X['RED_CAR'] = 0
-            X['OLD_CLAIM'] = customer.prev_insurance_amt
+            X['OLD_CLAIM'] = customer.prev_insurance_amt//(17.2)
             X['CLM_FREQ'] = customer.prev_insurance_no
             if customer.prev_claim_revoked=='Yes':
                 X['REVOKED'] = 1
