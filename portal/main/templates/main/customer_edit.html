@@ -262,10 +262,10 @@
         else {
             $('#Rural')[0].checked = 'true';
         }
-        
-        if (customer_fields['parents_alive']) {
+
+        if (customer_fields['parents_alive'] == "Yes") {
             $('#parents_alive_true')[0].checked = 'true';
-        } else {
+        } else if(customer_fields['parents_alive'] == "No") {
             $('#parents_alive_false')[0].checked = 'true';
         }
 
@@ -289,18 +289,18 @@
             $('#' + car_type)[0].checked = true;
         }
 
-        if (car_color == true) {
+        if (car_color == "Yes") {
             $('#red')[0].checked = true;
-        } else {
+        } else if(car_color == "No") {
             $('#not_red')[0].checked = true;
         }
 
-        if (prev_claim_revoked == true) {
+        if (prev_claim_revoked == "Yes") {
             $('#revoked')[0].checked = true;
-        } else {
+        } else if(prev_claim_revoked == "No") {
             $('#not_revoked')[0].checked = true;
         }
-        
+
         let labels = document.querySelectorAll('label');
         labels.forEach( label => {
             label.className += ' active';
