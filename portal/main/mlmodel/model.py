@@ -17,18 +17,13 @@ working_directory = os.path.dirname((os.path.abspath(__file__)))
 
 class ml_model(object):
     def __init__(self):
+        self.scaler = pickle.load(
+            open(os.path.join(working_directory, 'scaler.pkl'), 'rb'))
         try:
             self.models = pickle.load(
                 open(os.path.join(working_directory, 'model.pkl'), 'rb'))
         except:
-            clf1 = SVC(gamma='auto', probability=True, class_weight='balanced')
-            clf2 = RandomForestClassifier(n_estimators=1000, random_state=42)
-            clf3 = KNeighborsClassifier(n_neighbors=10)
-            clf4 = AdaBoostClassifier()
-            self.models = [clf1, clf2, clf3, clf4]
-
-        self.scaler = pickle.load(
-            open(os.path.join(working_directory, 'scaler.pkl'), 'rb'))
+            self.train()
 
     def pre_process(self, X):
         """
@@ -158,17 +153,15 @@ class ml_model(object):
         new_models.append(clf1)
         new_models.append(clf2)
 
+        self.models = new_models
+
         pickle.dump(new_models, open(os.path.join(
             working_directory, model_file), 'wb'))
-
-# model = ml_model()
-# model.train()
-
 
 # Tested:
 
 # data = json.load(
-#       open(os.path.join(working_directory, 'sample_data.json'), 'r'))
+#   open(os.path.join(working_directory, 'sample_data.json'), 'r'))
 # model = ml_model()
 # result = model.predict(data)
 # print(result)
