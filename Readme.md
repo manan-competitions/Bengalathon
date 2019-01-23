@@ -15,6 +15,8 @@ data to predict future claims more effectively?
 
 ## Machine Learning Model
 ### Data pre processing
+The data can be downloaded from [here](https://www.kaggle.com/xiaomengsun/car-insurance-claim-data/version/1)
+
 The Data obtained had:
 * Missing values
 * A mix of continuous and categorical features
